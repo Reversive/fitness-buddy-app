@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">fitness-buddy-app</string>
+
+    <string name="splash_heading">Ready to\nget fit?</string>
+    <string name="splash_tag_line">We will help you achieve your goals!</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="splash_logo_alt">Fitness Buddy Logo</string>
+    <string name="splash_back_btn_alt">Go back button</string>
+    <string name="login_enter_email">Enter Email</string>
+    <string name="login_enter_password">Enter Password</string>
+    <string name="login_remember_me">Remember me</string>
+    <string name="login_create_account">Create Account</string>
+    <string name="enter_full_name">Full Name</string>
+
+    <string name="create_account">Create Account</string>
+    <string name="signup_email">Email</string>
+    <string name="signup_password">Password</string>
+    <string name="signup_height">Height</string>
+    <string name="signup_weight">Weight</string>
+    <string name="signup_select_gender">Select your Gender</string>
+    <string name="signup_select_age">Select your Age</string>
+    <string name="signup_male">Male</string>
+    <string name="signup_female">Female</string>
+    <string name="signup_other">Other</string>
+    <string name="next">Next</string>
+    <string name="signup_done">Done</string>
+    <string name="signup_step_one">1/2</string>
+    <string name="signup_step_two">2/2</string>
+
+    <string name="verification_text">Verification</string>
+    <string name="verification_description_text">Enter the verification code sent to your email</string>
+    <string name="verification_code_text">co\nde</string>
+    <string name="signup_verify_code_text">Verify Code</string>
+
+    <string name="community_routines">Routines</string>
+    <string name="profile">Profile</string>
+    <string name="favorites">Favorites</string>
+
+    <string name="routine_default_title">Routine Title</string>
+
+</resources>
