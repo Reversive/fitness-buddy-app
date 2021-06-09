@@ -37,6 +37,7 @@
     <string name="profile">Profile</string>
     <string name="favorites">Favorites</string>
 
-    <string name="routine_default_title">Routine Title</string>
+    <string name="default_card_title">Routine Title</string>
+    <string name="default_card_category">Category</string>
 
 </resources>

@@ -90,15 +90,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean validatePassword() {
         String value = Objects.requireNonNull(password.getEditText()).getText().toString().trim();
-        String passwordRegex = "^" +
-                "(?=.*[a-zA-Z])" +      //any letter
-                "(?=\\S+$)" +           //no white spaces
-                "$";
         if (value.isEmpty()) {
             password.setError("Field can not be empty");
-            return false;
-        } else if (!value.matches(passwordRegex)) {
-            password.setError("Invalid password");
             return false;
         } else {
             password.setError(null);

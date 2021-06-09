@@ -21,6 +21,7 @@ public class MainNavigationActivity extends AppCompatActivity {
     ProfileFragment profileFragment = new ProfileFragment();
     FavoriteFragment favoriteFragment = new FavoriteFragment();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +29,7 @@ public class MainNavigationActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        loadFragment(communityRoutinesFragment);
+        if(savedInstanceState == null) loadFragment(communityRoutinesFragment);
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,7 +51,7 @@ public class MainNavigationActivity extends AppCompatActivity {
     };
 
     public void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
         transaction.replace(R.id.frame_container, fragment);
         transaction.commit();
     }
