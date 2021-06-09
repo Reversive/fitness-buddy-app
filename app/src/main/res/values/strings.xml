@@ -39,5 +39,10 @@
 
     <string name="default_card_title">Routine Title</string>
     <string name="default_card_category">Category</string>
+    <string name="default_card_difficulty">Difficulty</string>
+    <string name="default_card_weight_field">Weight Loss</string>
+    <string name="default_card_difficulty_field">Rookie</string>
+
+    <string name="extended_fab_label">Sort and Filter</string>
 
 </resources>

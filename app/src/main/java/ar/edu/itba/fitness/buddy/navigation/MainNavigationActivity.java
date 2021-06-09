@@ -1,14 +1,21 @@
 package ar.edu.itba.fitness.buddy.navigation;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Objects;
 
 import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.navigation.community_routines.CommunityRoutinesFragment;
@@ -26,28 +33,29 @@ public class MainNavigationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_navigation);
-
+        ActionBar actionBar = getSupportActionBar();
+        ColorDrawable colorDrawable
+                = new ColorDrawable(ContextCompat.getColor(this, R.color.purple_web));
+        Objects.requireNonNull(actionBar).setBackgroundDrawable(colorDrawable);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         if(savedInstanceState == null) loadFragment(communityRoutinesFragment);
     }
 
-    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.communityRoutinesFragment:
-                    loadFragment(communityRoutinesFragment);
-                    return true;
-                case R.id.profileFragment:
-                    loadFragment(profileFragment);
-                    return true;
-                case R.id.favoriteFragment:
-                    loadFragment(favoriteFragment);
-                    return true;
-            }
-            return false;
+    @SuppressLint("NonConstantResourceId")
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
+        switch (item.getItemId()) {
+            case R.id.communityRoutinesFragment:
+                loadFragment(communityRoutinesFragment);
+                return true;
+            case R.id.profileFragment:
+                loadFragment(profileFragment);
+                return true;
+            case R.id.favoriteFragment:
+                loadFragment(favoriteFragment);
+                return true;
         }
+        return false;
     };
 
     public void loadFragment(Fragment fragment) {

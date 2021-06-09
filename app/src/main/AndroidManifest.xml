@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/theme.fitness.buddy.app">
-        <activity android:name=".navigation.MainNavigationActivity"></activity>
+        <activity android:name=".navigation.MainNavigationActivity"/>
         <activity android:name=".splash.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
