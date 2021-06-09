@@ -1,19 +1,18 @@
-package ar.edu.itba.fitness.buddy.navigation.community_routines;
+package ar.edu.itba.fitness.buddy.navigation.community;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,11 +20,11 @@ import java.util.ArrayList;
 
 import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.adapter.RoutineCardAdapter;
-import ar.edu.itba.fitness.buddy.helper.RoutineCard;
+import ar.edu.itba.fitness.buddy.model.RoutineCard;
 
 
-public class CommunityRoutinesFragment extends Fragment {
-
+public class CommunityRoutinesFragment extends Fragment implements RoutineCardAdapter.OnRoutineCardListener{
+    ArrayList<RoutineCard> routineCards;
     RecyclerView routineRecycler;
     RecyclerView.Adapter<RoutineCardAdapter.RoutineCardViewHolder> adapter;
     public CommunityRoutinesFragment() {
@@ -50,15 +49,23 @@ public class CommunityRoutinesFragment extends Fragment {
         routineRecycler = view.findViewById(R.id.routine_recycler);
         routineRecycler.setHasFixedSize(true);
         routineRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        ArrayList<RoutineCard> routineCards = new ArrayList<>();
-        routineCards.add(new RoutineCard("First Routine", "Rookie", "Weight Loss", 5));
-        routineCards.add(new RoutineCard("Second Routine", "Intermediate", "Muscle Gain", 3));
-        routineCards.add(new RoutineCard("Third Routine", "Rookie", "Muscle Gain", 2));
-        routineCards.add(new RoutineCard("Fourth Routine", "Advanced", "Weight Loss", 4));
-        routineCards.add(new RoutineCard("Fifth Routine", "Intermediate", "Muscle Gain", 5));
-        routineCards.add(new RoutineCard("Sixth Routine", "Rookie", "Weight Loss", 3));
-        adapter = new RoutineCardAdapter(routineCards);
+        routineCards = new ArrayList<>();
+        routineCards.add(new RoutineCard(1, "First Routine", "Rookie", "Weight Loss", 5));
+        routineCards.add(new RoutineCard(2, "Second Routine", "Intermediate", "Muscle Gain", 3));
+        routineCards.add(new RoutineCard(3,"Third Routine", "Rookie", "Muscle Gain", 2));
+        routineCards.add(new RoutineCard(4, "Fourth Routine", "Advanced", "Weight Loss", 4));
+        routineCards.add(new RoutineCard(5, "Fifth Routine", "Intermediate", "Muscle Gain", 5));
+        routineCards.add(new RoutineCard(6, "Sixth Routine", "Rookie", "Weight Loss", 3));
+        adapter = new RoutineCardAdapter(routineCards, this);
         routineRecycler.setAdapter(adapter);
+
         return view;
+    }
+
+    @Override
+    public void onRoutineCardClick(int position) {
+        RoutineCard clickedRoutine = routineCards.get(position);
+        // Send info to other fragment/activity to show routine info
+        // Launch fragment/activity
     }
 }

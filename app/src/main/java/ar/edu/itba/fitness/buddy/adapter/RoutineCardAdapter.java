@@ -12,21 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ar.edu.itba.fitness.buddy.R;
-import ar.edu.itba.fitness.buddy.helper.RoutineCard;
+import ar.edu.itba.fitness.buddy.model.RoutineCard;
 
 public class RoutineCardAdapter extends RecyclerView.Adapter<RoutineCardAdapter.RoutineCardViewHolder> {
 
-    ArrayList<RoutineCard> routineCards;
+    private ArrayList<RoutineCard> routineCards;
+    private OnRoutineCardListener mOnRoutineCardListener;
 
-    public RoutineCardAdapter(ArrayList<RoutineCard> routineCards) {
+    public RoutineCardAdapter(ArrayList<RoutineCard> routineCards, OnRoutineCardListener onRoutineCardListener) {
         this.routineCards = routineCards;
+        this.mOnRoutineCardListener = onRoutineCardListener;
     }
 
     @NonNull
     @Override
     public RoutineCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_card_item, parent, false);
-        return new RoutineCardViewHolder(view);
+        return new RoutineCardViewHolder(view, this.mOnRoutineCardListener);
     }
 
     @Override
@@ -44,17 +46,29 @@ public class RoutineCardAdapter extends RecyclerView.Adapter<RoutineCardAdapter.
         return routineCards.size();
     }
 
-    public static class RoutineCardViewHolder extends RecyclerView.ViewHolder {
+    public static class RoutineCardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         AppCompatTextView title, category, difficulty;
         RatingBar rating;
+        OnRoutineCardListener onRoutineCardListener;
 
-        public RoutineCardViewHolder(@NonNull View itemView) {
+        public RoutineCardViewHolder(@NonNull View itemView, OnRoutineCardListener onRoutineCardListener) {
             super(itemView);
             title = itemView.findViewById(R.id.default_card_title);
             category = itemView.findViewById(R.id.default_card_weight_field);
             difficulty = itemView.findViewById(R.id.default_card_difficulty_field);
             rating = itemView.findViewById(R.id.default_card_rating_bar);
+            this.onRoutineCardListener = onRoutineCardListener;
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) {
+            onRoutineCardListener.onRoutineCardClick(getBindingAdapterPosition());
+        }
+    }
+
+    public interface OnRoutineCardListener {
+        void onRoutineCardClick(int position);
     }
 }
