@@ -17,10 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.adapter.RoutineCardAdapter;
 import ar.edu.itba.fitness.buddy.model.RoutineCard;
+import ar.edu.itba.fitness.buddy.navigation.routine.RoutinePreviewFragment;
 
 
 public class CommunityRoutinesFragment extends Fragment implements RoutineCardAdapter.OnRoutineCardListener{
@@ -65,6 +67,9 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
     @Override
     public void onRoutineCardClick(int position) {
         RoutineCard clickedRoutine = routineCards.get(position);
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
+        transaction.replace(R.id.frame_container, new RoutinePreviewFragment());
+        transaction.commit();
         // Send info to other fragment/activity to show routine info
         // Launch fragment/activity
     }
