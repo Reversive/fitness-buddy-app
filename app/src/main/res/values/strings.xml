@@ -33,7 +33,8 @@
     <string name="verification_code_text">co\nde</string>
     <string name="signup_verify_code_text">Verify Code</string>
 
-    <string name="community_routines">Routines</string>
+    <string name="community_routines">Community Routines</string>
+    <string name="personal_routines">Personal Routines</string>
     <string name="profile">Profile</string>
     <string name="favorites">Favorites</string>
 
@@ -44,5 +45,6 @@
     <string name="default_card_difficulty_field">Rookie</string>
 
     <string name="extended_fab_label">Sort and Filter</string>
+
 
 </resources>

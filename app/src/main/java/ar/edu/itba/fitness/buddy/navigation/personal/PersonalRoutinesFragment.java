@@ -1,8 +1,7 @@
-package ar.edu.itba.fitness.buddy.navigation.community;
+package ar.edu.itba.fitness.buddy.navigation.personal;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -10,10 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,43 +22,34 @@ import ar.edu.itba.fitness.buddy.model.RoutineCard;
 import ar.edu.itba.fitness.buddy.navigation.routine.RoutinePreviewFragment;
 
 
-public class CommunityRoutinesFragment extends Fragment implements RoutineCardAdapter.OnRoutineCardListener{
+public class PersonalRoutinesFragment extends Fragment implements RoutineCardAdapter.OnRoutineCardListener{
     ArrayList<RoutineCard> routineCards;
     RecyclerView routineRecycler;
     RecyclerView.Adapter<RoutineCardAdapter.RoutineCardViewHolder> adapter;
-    public CommunityRoutinesFragment() {
+
+    public PersonalRoutinesFragment() {
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.community_routines);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar, menu);
-        // set search filter
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.personal_routines);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_community_routines, container, false);
-        routineRecycler = view.findViewById(R.id.community_routine_recycler);
+        View view = inflater.inflate(R.layout.fragment_personal_routines, container, false);
+        routineRecycler = view.findViewById(R.id.personal_routine_recycler);
         routineRecycler.setHasFixedSize(true);
         routineRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
         routineCards = new ArrayList<>();
-        routineCards.add(new RoutineCard(1, "First Routine", "Rookie", "Weight Loss", 5));
-        routineCards.add(new RoutineCard(2, "Second Routine", "Intermediate", "Muscle Gain", 3));
-        routineCards.add(new RoutineCard(3,"Third Routine", "Rookie", "Muscle Gain", 2));
-        routineCards.add(new RoutineCard(4, "Fourth Routine", "Advanced", "Weight Loss", 4));
-        routineCards.add(new RoutineCard(5, "Fifth Routine", "Intermediate", "Muscle Gain", 5));
-        routineCards.add(new RoutineCard(6, "Sixth Routine", "Rookie", "Weight Loss", 3));
+        routineCards.add(new RoutineCard(1, "First Personal", "Rookie", "Weight Loss", 5));
+        routineCards.add(new RoutineCard(2, "Second Personal", "Intermediate", "Muscle Gain", 3));
+        routineCards.add(new RoutineCard(3,"Third Personal", "Rookie", "Muscle Gain", 2));
+        routineCards.add(new RoutineCard(4, "Fourth Personal", "Advanced", "Weight Loss", 4));
         adapter = new RoutineCardAdapter(routineCards, this);
         routineRecycler.setAdapter(adapter);
-
         return view;
     }
 
