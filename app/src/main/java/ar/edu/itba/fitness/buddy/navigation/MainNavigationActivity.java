@@ -1,5 +1,6 @@
 package ar.edu.itba.fitness.buddy.navigation;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -9,6 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,12 +20,13 @@ import java.util.Objects;
 import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.navigation.community.CommunityRoutinesFragment;
 import ar.edu.itba.fitness.buddy.navigation.favorites.FavoriteFragment;
+import ar.edu.itba.fitness.buddy.navigation.personal.PersonalRoutinesFragment;
 import ar.edu.itba.fitness.buddy.navigation.profile.ProfileFragment;
 
 public class MainNavigationActivity extends AppCompatActivity {
 
     CommunityRoutinesFragment communityRoutinesFragment = new CommunityRoutinesFragment();
-    ProfileFragment profileFragment = new ProfileFragment();
+    PersonalRoutinesFragment personalRoutinesFragment = new PersonalRoutinesFragment();
     FavoriteFragment favoriteFragment = new FavoriteFragment();
 
 
@@ -39,14 +43,15 @@ public class MainNavigationActivity extends AppCompatActivity {
         if(savedInstanceState == null) loadFragment(communityRoutinesFragment);
     }
 
+
     @SuppressLint("NonConstantResourceId")
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
         switch (item.getItemId()) {
             case R.id.communityRoutinesFragment:
                 loadFragment(communityRoutinesFragment);
                 return true;
-            case R.id.profileFragment:
-                loadFragment(profileFragment);
+            case R.id.personalRoutinesFragment:
+                loadFragment(personalRoutinesFragment);
                 return true;
             case R.id.favoriteFragment:
                 loadFragment(favoriteFragment);
