@@ -18,15 +18,13 @@ public class FavoriteRepository {
     }
 
     public LiveData<Resource<PagedList<Routine>>> getFavorites(Integer page,
-                                                              Integer size,
-                                                              String orderBy,
-                                                              String direction) {
+                                                              Integer size) {
         return new NetworkBoundResource<PagedList<Routine>, PagedList<Routine>>()
         {
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedList<Routine>>> createCall() {
-                return apiFavoritesService.getFavorites(page, size, orderBy, direction);
+                return apiFavoritesService.getFavorites(page, size);
             }
         }.asLiveData();
     }

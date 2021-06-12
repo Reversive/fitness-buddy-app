@@ -9,6 +9,8 @@ import ar.edu.itba.fitness.buddy.App;
 import ar.edu.itba.fitness.buddy.api.ApiClient;
 import ar.edu.itba.fitness.buddy.api.model.ApiResponse;
 import ar.edu.itba.fitness.buddy.api.model.Credentials;
+import ar.edu.itba.fitness.buddy.api.model.PagedList;
+import ar.edu.itba.fitness.buddy.api.model.Routine;
 import ar.edu.itba.fitness.buddy.api.model.Token;
 import ar.edu.itba.fitness.buddy.api.model.User;
 import ar.edu.itba.fitness.buddy.api.model.Verification;
@@ -74,6 +76,22 @@ public class UserRepository {
             @Override
             protected LiveData<ApiResponse<Void>> createCall() {
                 return apiService.verifyEmail(data);
+            }
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<PagedList<Routine>>> getCurrentUserRoutines(String difficulty,
+                                                               String search,
+                                                               Integer page,
+                                                               Integer size,
+                                                               String orderBy,
+                                                               String direction) {
+        return new NetworkBoundResource<PagedList<Routine>, PagedList<Routine>>() {
+            @NonNull
+            @NotNull
+            @Override
+            protected LiveData<ApiResponse<PagedList<Routine>>> createCall() {
+                return apiService.getCurrentUserRoutines(difficulty, search, page, size, orderBy, direction);
             }
         }.asLiveData();
     }
