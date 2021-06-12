@@ -1,6 +1,7 @@
 package ar.edu.itba.fitness.buddy.splash.register;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +12,18 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Objects;
 
+import ar.edu.itba.fitness.buddy.App;
 import ar.edu.itba.fitness.buddy.R;
+import ar.edu.itba.fitness.buddy.api.model.ApiResponse;
+import ar.edu.itba.fitness.buddy.api.model.Error;
+import ar.edu.itba.fitness.buddy.api.model.User;
+import ar.edu.itba.fitness.buddy.api.repository.Resource;
+import ar.edu.itba.fitness.buddy.api.repository.Status;
+
 
 public class RegisterStepActivity extends AppCompatActivity {
 
@@ -76,23 +86,53 @@ public class RegisterStepActivity extends AppCompatActivity {
             return true;
     }
 
+    public static long getLongFromDatePicker(DatePicker datePicker){
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year =  datePicker.getYear();
+
+        Calendar calendar = new GregorianCalendar(year, month, day);
+        return calendar.getTimeInMillis();
+    }
+
     public void callVerificationScreen(View view) {
         if(!validateGender() || !validateAge() ) return;
         selectedGender = findViewById(radioGroup.getCheckedRadioButtonId());
         String genderText = selectedGender.getText().toString();
-        int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth();
-        int year = datePicker.getYear();
-        String dateText = day + "/" + month + "/" + year;
-        Intent intent = new Intent(getApplicationContext(), RegisterVerificationActivity.class);
-        intent.putExtra("fullName", fullNameText);
-        intent.putExtra("email", emailText);
-        intent.putExtra("password", passwordText);
-        intent.putExtra("height", heightText);
-        intent.putExtra("weight", weightText);
-        intent.putExtra("gender", genderText);
-        intent.putExtra("date", dateText);
-        startActivity(intent);
+        long date = getLongFromDatePicker(datePicker);
+        User user = new User(emailText, passwordText, fullNameText, null, genderText.toLowerCase(), date, emailText, null, null, null);
+        App app = (App)getApplication();
+        app.getUserRepository().register(user).observe(this, t -> {
+            if(t.getStatus() == Status.SUCCESS) {
+                findViewById(R.id.register_progress_bar).setVisibility(View.GONE);
+                Intent intent = new Intent(getApplicationContext(), RegisterVerificationActivity.class);
+                intent.putExtra("fullName", fullNameText);
+                intent.putExtra("email", emailText);
+                intent.putExtra("password", passwordText);
+                intent.putExtra("height", heightText);
+                intent.putExtra("weight", weightText);
+                intent.putExtra("gender", genderText);
+                intent.putExtra("date", dateText);
+                startActivity(intent);
+            } else {
+                defaultResourceHandler(t);
+            }
+        });
 
+
+    }
+
+    private void defaultResourceHandler(Resource<?> resource) {
+        switch (resource.getStatus()) {
+            case LOADING:
+                findViewById(R.id.register_progress_bar).setVisibility(View.VISIBLE);
+                break;
+            case ERROR:
+                findViewById(R.id.register_progress_bar).setVisibility(View.GONE);
+                Error error = resource.getError();
+                String message = getString(R.string.error, Objects.requireNonNull(error).getDescription(), error.getCode());
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }

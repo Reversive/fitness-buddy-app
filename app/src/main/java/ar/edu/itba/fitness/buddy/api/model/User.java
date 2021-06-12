@@ -11,6 +11,9 @@ public class User {
     @SerializedName("username")
     @Expose
     private String username;
+    @SerializedName("password")
+    @Expose
+    private String password;
     @SerializedName("firstName")
     @Expose
     private String firstName;
@@ -48,6 +51,20 @@ public class User {
     public User() {
     }
 
+    public User(String username, String password, String firstName, String lastName, String gender, long birthdate, String email, String phone, String avatarUrl, Object metadata) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.phone = phone;
+        this.avatarUrl = avatarUrl;
+        this.metadata = metadata;
+    }
+
     public User(int id, String username, String firstName, String lastName, String gender, long birthdate, String email, String phone, String avatarUrl, Object metadata, long date, long lastActivity, boolean verified) {
         super();
         this.id = id;
@@ -71,6 +88,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUsername() {

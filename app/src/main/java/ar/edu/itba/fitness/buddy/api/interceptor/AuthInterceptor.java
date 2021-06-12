@@ -1,5 +1,7 @@
 package ar.edu.itba.fitness.buddy.api.interceptor;
 
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -13,18 +15,17 @@ import okhttp3.Response;
 public class AuthInterceptor implements Interceptor {
     private final AppPreferences preferences;
 
-    public AuthInterceptor() {
-        preferences = App.getPreferences();
+    public AuthInterceptor(App application) {
+        preferences = application.getPreferences();
     }
 
     @NotNull
     @Override
-    public Response intercept(@NotNull Chain chain) throws IOException {
+    public Response intercept(@NonNull Interceptor.Chain chain) throws IOException {
         Request.Builder request = chain.request().newBuilder();
-
-        if(preferences.getAuthToken() != null)
+        if (preferences.getAuthToken() != null) {
             request.addHeader("Authorization", "Bearer " + preferences.getAuthToken());
-
+        }
         return chain.proceed(request.build());
     }
 }

@@ -1,9 +1,6 @@
 package ar.edu.itba.fitness.buddy.api.model;
-
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 
 public class Routine {
 
@@ -37,6 +34,7 @@ public class Routine {
     @SerializedName("metadata")
     @Expose
     private Object metadata;
+
 
     public Routine() {
     }

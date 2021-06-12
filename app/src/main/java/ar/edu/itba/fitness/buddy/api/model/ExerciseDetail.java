@@ -1,6 +1,5 @@
 package ar.edu.itba.fitness.buddy.api.model;
 
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -25,22 +24,9 @@ public class ExerciseDetail {
     @Expose
     private int order;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
     public ExerciseDetail() {
     }
 
-    /**
-     *
-     * @param date
-     * @param name
-     * @param id
-     * @param detail
-     * @param type
-     * @param order
-     */
     public ExerciseDetail(int id, String name, String detail, String type, long date, int order) {
         super();
         this.id = id;

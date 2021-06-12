@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import ar.edu.itba.fitness.buddy.App;
 import ar.edu.itba.fitness.buddy.api.adapter.LiveDataCallAdapterFactory;
 import ar.edu.itba.fitness.buddy.api.interceptor.ApiDateTypeConverter;
 import ar.edu.itba.fitness.buddy.api.interceptor.AuthInterceptor;
@@ -24,20 +25,19 @@ public class ApiClient {
 
     }
 
-    public static <S> S create(Class<S> serviceClass) {
+    public static <S> S create(App application, Class<S> serviceClass) {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor()
                 .setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
-                .addInterceptor(new AuthInterceptor())
+                .addInterceptor(new AuthInterceptor(application))
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                 .build();
 
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Date.class, new ApiDateTypeConverter())
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()

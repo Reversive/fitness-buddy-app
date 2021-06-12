@@ -1,102 +1,103 @@
 package ar.edu.itba.fitness.buddy.api.model;
 
-import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+
 public class Cycle {
 
-    @SerializedName("totalCount")
+    @SerializedName("id")
     @Expose
-    private int totalCount;
-    @SerializedName("orderBy")
+    private int id;
+    @SerializedName("name")
     @Expose
-    private String orderBy;
-    @SerializedName("direction")
+    private String name;
+    @SerializedName("detail")
     @Expose
-    private String direction;
-    @SerializedName("content")
+    private String detail;
+    @SerializedName("type")
     @Expose
-    private List<CycleContent> content = null;
-    @SerializedName("size")
+    private String type;
+    @SerializedName("order")
     @Expose
-    private int size;
-    @SerializedName("page")
+    private int order;
+    @SerializedName("repetitions")
     @Expose
-    private int page;
-    @SerializedName("isLastPage")
+    private int repetitions;
+    @SerializedName("metadata")
     @Expose
-    private boolean isLastPage;
+    private Object metadata;
 
 
     public Cycle() {
     }
 
-    public Cycle(int totalCount, String orderBy, String direction, List<CycleContent> content, int size, int page, boolean isLastPage) {
+    public Cycle(int id, String name, String detail, String type, int order, int repetitions, Object metadata) {
         super();
-        this.totalCount = totalCount;
-        this.orderBy = orderBy;
-        this.direction = direction;
-        this.content = content;
-        this.size = size;
-        this.page = page;
-        this.isLastPage = isLastPage;
+        this.id = id;
+        this.name = name;
+        this.detail = detail;
+        this.type = type;
+        this.order = order;
+        this.repetitions = repetitions;
+        this.metadata = metadata;
     }
 
-    public int getTotalCount() {
-        return totalCount;
+    public int getId() {
+        return id;
     }
 
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getOrderBy() {
-        return orderBy;
+    public String getName() {
+        return name;
     }
 
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDirection() {
-        return direction;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setDirection(String direction) {
-        this.direction = direction;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
-    public List<CycleContent> getContent() {
-        return content;
+    public String getType() {
+        return type;
     }
 
-    public void setContent(List<CycleContent> content) {
-        this.content = content;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public int getSize() {
-        return size;
+    public int getOrder() {
+        return order;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setOrder(int order) {
+        this.order = order;
     }
 
-    public int getPage() {
-        return page;
+    public int getRepetitions() {
+        return repetitions;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public void setRepetitions(int repetitions) {
+        this.repetitions = repetitions;
     }
 
-    public boolean isIsLastPage() {
-        return isLastPage;
+    public Object getMetadata() {
+        return metadata;
     }
 
-    public void setIsLastPage(boolean isLastPage) {
-        this.isLastPage = isLastPage;
+    public void setMetadata(Object metadata) {
+        this.metadata = metadata;
     }
 
 }

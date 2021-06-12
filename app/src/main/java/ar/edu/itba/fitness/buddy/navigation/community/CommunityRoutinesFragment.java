@@ -43,7 +43,7 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar, menu);
-        // set search filter
+
     }
 
     @Override

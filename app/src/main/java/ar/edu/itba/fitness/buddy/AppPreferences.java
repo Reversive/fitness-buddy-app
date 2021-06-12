@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class AppPreferences {
-    private static final String AUTH_TOKEN = "auth_token";
-    private static final String PREFERENCE_NAME = "app-preferences";
+    private final String AUTH_TOKEN = "auth_token";
+
     private final SharedPreferences sharedPreferences;
 
     public AppPreferences(Context context) {
-        sharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE);
     }
 
     public void setAuthToken(String token) {

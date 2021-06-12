@@ -1,14 +1,17 @@
 package ar.edu.itba.fitness.buddy.api.model;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ApiError {
-    public static final int UNEXPECTED_ERROR = 99;
+import java.util.List;
+
+public class Error {
+
+    public static final int LOCAL_UNEXPECTED_ERROR = 10;
+
     @SerializedName("code")
     @Expose
-    private int code;
+    private Integer code;
     @SerializedName("description")
     @Expose
     private String description;
@@ -16,27 +19,24 @@ public class ApiError {
     @Expose
     private List<String> details = null;
 
-    public ApiError() {
+    public Error()  {
     }
 
-    public ApiError(int code, String description, List<String> details) {
-        super();
+    public Error(Integer code, String description) {
+        this(code, description, null);
+    }
+
+    public Error(Integer code, String description, List<String> details) {
         this.code = code;
         this.description = description;
         this.details = details;
     }
 
-    public ApiError(int code, String description) {
-        super();
-        this.code = code;
-        this.description = description;
-    }
-
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 
@@ -55,5 +55,4 @@ public class ApiError {
     public void setDetails(List<String> details) {
         this.details = details;
     }
-
 }

@@ -19,11 +19,10 @@
             android:id="@+id/login_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/splash_back_btn_alt"
             android:onClick="callSplashScreen"
             android:padding="5dp"
-            android:src="@drawable/ic_arrow_back"
-            android:contentDescription="@string/splash_back_btn_alt" />
-
+            android:src="@drawable/ic_arrow_back" />
 
 
         <TextView
@@ -102,12 +101,22 @@
 
         </LinearLayout>
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/login_progress_bar"
+            android:layout_width="match_parent"
+            app:indicatorColor="@color/white"
+            app:trackThickness="8dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:showAnimationBehavior="outward" />
+
         <Button
             android:id="@+id/login_do_btn"
             style="@style/splashScreenButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/muli"
             android:onClick="callLoginVerification"
             android:text="@string/login"
@@ -126,4 +135,6 @@
 
 
     </LinearLayout>
+
+
 </ScrollView>

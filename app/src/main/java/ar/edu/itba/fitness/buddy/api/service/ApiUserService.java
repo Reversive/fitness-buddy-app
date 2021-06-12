@@ -20,13 +20,13 @@ public interface ApiUserService {
     LiveData<ApiResponse<Void>> logout();
 
     @GET("users/current")
-    LiveData<ApiResponse<User>> getCurrent();
+    LiveData<ApiResponse<User>> getCurrentUser();
 
     @POST("users")
     LiveData<ApiResponse<User>> register(@Body User user);
 
     @POST("users/verify_email")
-    LiveData<ApiResponse<Void>> verifyEmail(Verification data);
+    LiveData<ApiResponse<Void>> verifyEmail(@Body Verification data);
 
     @PUT("users/current")
     LiveData<ApiResponse<User>> updateProfile(@Body User user);

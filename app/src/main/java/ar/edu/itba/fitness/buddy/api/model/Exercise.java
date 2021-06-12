@@ -1,102 +1,78 @@
 package ar.edu.itba.fitness.buddy.api.model;
 
-import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+
 public class Exercise {
 
-    @SerializedName("totalCount")
+    @SerializedName("exercise")
     @Expose
-    private int totalCount;
-    @SerializedName("orderBy")
+    private ExerciseDetail exercise;
+    @SerializedName("order")
     @Expose
-    private String orderBy;
-    @SerializedName("direction")
+    private int order;
+    @SerializedName("duration")
     @Expose
-    private String direction;
-    @SerializedName("content")
+    private int duration;
+    @SerializedName("repetitions")
     @Expose
-    private List<ExerciseContent> content = null;
-    @SerializedName("size")
+    private int repetitions;
+    @SerializedName("metadata")
     @Expose
-    private int size;
-    @SerializedName("page")
-    @Expose
-    private int page;
-    @SerializedName("isLastPage")
-    @Expose
-    private boolean isLastPage;
-
+    private Object metadata;
 
     public Exercise() {
     }
 
-    public Exercise(int totalCount, String orderBy, String direction, List<ExerciseContent> content, int size, int page, boolean isLastPage) {
+    public Exercise(ExerciseDetail exercise, int order, int duration, int repetitions, Object metadata) {
         super();
-        this.totalCount = totalCount;
-        this.orderBy = orderBy;
-        this.direction = direction;
-        this.content = content;
-        this.size = size;
-        this.page = page;
-        this.isLastPage = isLastPage;
+        this.exercise = exercise;
+        this.order = order;
+        this.duration = duration;
+        this.repetitions = repetitions;
+        this.metadata = metadata;
     }
 
-    public int getTotalCount() {
-        return totalCount;
+    public ExerciseDetail getExercise() {
+        return exercise;
     }
 
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
+    public void setExercise(ExerciseDetail exercise) {
+        this.exercise = exercise;
     }
 
-    public String getOrderBy() {
-        return orderBy;
+    public int getOrder() {
+        return order;
     }
 
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
+    public void setOrder(int order) {
+        this.order = order;
     }
 
-    public String getDirection() {
-        return direction;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setDirection(String direction) {
-        this.direction = direction;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
-    public List<ExerciseContent> getContent() {
-        return content;
+    public int getRepetitions() {
+        return repetitions;
     }
 
-    public void setContent(List<ExerciseContent> content) {
-        this.content = content;
+    public void setRepetitions(int repetitions) {
+        this.repetitions = repetitions;
     }
 
-    public int getSize() {
-        return size;
+    public Object getMetadata() {
+        return metadata;
     }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public boolean isIsLastPage() {
-        return isLastPage;
-    }
-
-    public void setIsLastPage(boolean isLastPage) {
-        this.isLastPage = isLastPage;
+    public void setMetadata(Object metadata) {
+        this.metadata = metadata;
     }
 
 }

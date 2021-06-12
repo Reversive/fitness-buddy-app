@@ -11,7 +11,12 @@ import com.chaos.view.PinView;
 
 import java.util.Objects;
 
+import ar.edu.itba.fitness.buddy.App;
 import ar.edu.itba.fitness.buddy.R;
+import ar.edu.itba.fitness.buddy.api.model.Error;
+import ar.edu.itba.fitness.buddy.api.model.Verification;
+import ar.edu.itba.fitness.buddy.api.repository.Resource;
+import ar.edu.itba.fitness.buddy.api.repository.Status;
 import ar.edu.itba.fitness.buddy.splash.login.LoginActivity;
 
 public class RegisterVerificationActivity extends AppCompatActivity {
@@ -32,6 +37,7 @@ public class RegisterVerificationActivity extends AppCompatActivity {
         genderText = receiver.getStringExtra("gender");
         dateText = receiver.getStringExtra("date");
         pinView = findViewById(R.id.verification_pin_view);
+
     }
 
     public void callPreviousStep(View view) {
@@ -52,11 +58,28 @@ public class RegisterVerificationActivity extends AppCompatActivity {
             Toast.makeText(this, "Please input all code digits", Toast.LENGTH_SHORT).show();
             return;
         }
-        // Verify code....
+        App app = (App)getApplication();
+        Verification data = new Verification(emailText, code);
+        app.getUserRepository().verifyEmail(data).observe(this, t -> {
+            if(t.getStatus() == Status.SUCCESS) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                Toast.makeText(this, "User created successfully!", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+            } else {
+                defaultResourceHandler(t);
+            }
+        });
+    }
 
-        // Go to login
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        Toast.makeText(this, "User created successfully!", Toast.LENGTH_SHORT).show();
-        startActivity(intent);
+    private void defaultResourceHandler(Resource<?> resource) {
+        switch (resource.getStatus()) {
+            case LOADING:
+                break;
+            case ERROR:
+                Error error = resource.getError();
+                String message = getString(R.string.error, Objects.requireNonNull(error).getDescription(), error.getCode());
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }
