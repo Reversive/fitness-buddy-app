@@ -16,15 +16,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import ar.edu.itba.fitness.buddy.App;
 import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.adapter.RoutineCardAdapter;
+import ar.edu.itba.fitness.buddy.api.model.PagedList;
+import ar.edu.itba.fitness.buddy.api.model.Routine;
+import ar.edu.itba.fitness.buddy.api.repository.Resource;
+import ar.edu.itba.fitness.buddy.api.repository.Status;
 import ar.edu.itba.fitness.buddy.model.RoutineCard;
 import ar.edu.itba.fitness.buddy.navigation.routine.RoutinePreviewFragment;
-
+import ar.edu.itba.fitness.buddy.api.model.Error;
 
 public class CommunityRoutinesFragment extends Fragment implements RoutineCardAdapter.OnRoutineCardListener{
     ArrayList<RoutineCard> routineCards;
@@ -53,17 +60,37 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
         routineRecycler = view.findViewById(R.id.community_routine_recycler);
         routineRecycler.setHasFixedSize(true);
         routineRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        App app = (App)requireActivity().getApplication();
         routineCards = new ArrayList<>();
-        routineCards.add(new RoutineCard(1, "First Routine", "Rookie", "Weight Loss", 5));
-        routineCards.add(new RoutineCard(2, "Second Routine", "Intermediate", "Muscle Gain", 3));
-        routineCards.add(new RoutineCard(3,"Third Routine", "Rookie", "Muscle Gain", 2));
-        routineCards.add(new RoutineCard(4, "Fourth Routine", "Advanced", "Weight Loss", 4));
-        routineCards.add(new RoutineCard(5, "Fifth Routine", "Intermediate", "Muscle Gain", 5));
-        routineCards.add(new RoutineCard(6, "Sixth Routine", "Rookie", "Weight Loss", 3));
-        adapter = new RoutineCardAdapter(routineCards, this);
-        routineRecycler.setAdapter(adapter);
+        app.getRoutineRepository().getRoutines(null, null, 0, 10, "date", "asc").observe(getViewLifecycleOwner(), r -> {
+            if (r.getStatus() == Status.SUCCESS) {
+                PagedList<Routine> routinePage = r.getData();
+                if(routinePage != null) {
+                    ArrayList<Routine> routines = (ArrayList<Routine>)routinePage.getContent();
+                    routines.forEach(routine -> {
+                        routineCards.add(new RoutineCard(routine.getId(), routine.getName(), routine.getDifficulty(), routine.getCategory().toString(), routine.getAverageRating()));
+                    });
+                    adapter = new RoutineCardAdapter(routineCards, this);
+                    routineRecycler.setAdapter(adapter);
+                }
+            } else {
+                defaultResourceHandler(r);
+            }
+        });
 
         return view;
+    }
+
+    private void defaultResourceHandler(Resource<?> resource) {
+        switch (resource.getStatus()) {
+            case LOADING:
+                break;
+            case ERROR:
+                Error error = resource.getError();
+                String message = getString(R.string.error, Objects.requireNonNull(error).getDescription(), error.getCode());
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     @Override

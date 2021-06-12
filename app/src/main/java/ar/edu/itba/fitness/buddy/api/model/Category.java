@@ -3,6 +3,8 @@ package ar.edu.itba.fitness.buddy.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Category {
 
     @SerializedName("id")
@@ -49,4 +51,9 @@ public class Category {
         this.detail = detail;
     }
 
+    @NotNull
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
