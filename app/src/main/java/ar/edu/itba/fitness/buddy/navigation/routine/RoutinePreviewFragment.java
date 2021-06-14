@@ -3,6 +3,7 @@ package ar.edu.itba.fitness.buddy.navigation.routine;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,15 +34,14 @@ import ar.edu.itba.fitness.buddy.model.ExerciseCard;
 
 public class RoutinePreviewFragment extends Fragment {
 
-    CycleCard warmupCycle,cooldownCycle;
-    String name;
-    ArrayList<CycleCard> workoutCycles=new ArrayList<>();
-    RecyclerView cycleRecycler;
-    RecyclerView.Adapter<CycleCardAdapter.ViewHolder> adapter;
-    FloatingActionButton routineExecutor;
-    int id;
+    private CycleCard warmupCycle,cooldownCycle;
+    private final String name;
+    private final ArrayList<CycleCard> workoutCycles = new ArrayList<>();
+    private RecyclerView cycleRecycler;
+    private RecyclerView.Adapter<CycleCardAdapter.ViewHolder> adapter;
+    private final int id;
 
-    public RoutinePreviewFragment(int id,String name) {
+    public RoutinePreviewFragment(int id, String name) {
         this.id = id;
         this.name=name;
     }
@@ -49,10 +49,19 @@ public class RoutinePreviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routine_preview, container, false);
         View warmupView = view.findViewById(R.id.warmup_cycle);
-        View cooldownView= view.findViewById(R.id.cooldown_cycle);
+        View cooldownView = view.findViewById(R.id.cooldown_cycle);
+
+        FloatingActionButton routineExecutor = view.findViewById(R.id.routine_executor);
         cycleRecycler = view.findViewById(R.id.cycle_recycler);
         cycleRecycler.setHasFixedSize(true);
         cycleRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        routineExecutor.setOnClickListener((l) -> {
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
+            transaction.replace(R.id.frame_container, new RoutineExecutionFragment(this.id, this.name));
+            transaction.commit();
+        });
+
         fillData();
         return view;
     }

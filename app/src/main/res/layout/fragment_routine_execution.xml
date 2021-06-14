@@ -149,6 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:clickable="true"
+                    android:visibility="invisible"
                     app:rippleColor="#FFFFFF"
                     app:srcCompat="@android:drawable/ic_media_previous"
                     android:contentDescription="@string/default_fab_back_desc" />

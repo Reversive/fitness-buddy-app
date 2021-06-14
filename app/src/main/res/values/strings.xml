@@ -58,12 +58,12 @@
     <string name="duration_number">x</string>
     <string name="series_number">x</string>
 
-    <string name="default_exercise_title">Exercise Name</string>
+    <string name="default_exercise_title">-</string>
     <string name="default_exercise_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="default_reps_title">Reps</string>
-    <string name="default_reps">12</string>
+    <string name="default_reps">-</string>
     <string name="default_timer_title">Timer</string>
-    <string name="default_timer_value">30</string>
+    <string name="default_timer_value">-</string>
     <string name="default_fab_pause_desc">PAUSE/PLAY</string>
     <string name="default_fab_next_desc">NEXT</string>
     <string name="default_fab_back_desc">BACK</string>
