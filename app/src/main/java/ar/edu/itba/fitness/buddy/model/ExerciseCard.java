@@ -1,14 +1,15 @@
 package ar.edu.itba.fitness.buddy.model;
 
 public class ExerciseCard {
-    String exercise_name,imageUrl;
+    String exercise_name;
+    //String imageUrl;
     int duration,repetitions;
 
-    public ExerciseCard(String exercise_name, int duration, int repetitions, String image) {
+    public ExerciseCard(String exercise_name, int duration, int repetitions) {
         this.exercise_name = exercise_name;
         this.duration = duration;
         this.repetitions = repetitions;
-        this.imageUrl = image;
+
     }
 
     public String getExercise_name() {
@@ -23,7 +24,5 @@ public class ExerciseCard {
         return repetitions;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    //public String getImageUrl() {return imageUrl;}
 }

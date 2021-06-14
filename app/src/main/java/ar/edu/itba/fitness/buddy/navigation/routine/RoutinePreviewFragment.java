@@ -62,7 +62,8 @@ public class RoutinePreviewFragment extends Fragment {
             transaction.commit();
         });
 
-        fillData();
+        getWorkoutCycles();
+
         return view;
     }
 
@@ -78,52 +79,66 @@ public class RoutinePreviewFragment extends Fragment {
                 break;
         }
     }
-
-    void fillData(){
+   /* ArrayList<ExerciseCard> getExercises(int cycleId){
+        ArrayList<ExerciseCard> exerciseCards=new ArrayList<>();
         App app = (App)requireActivity().getApplication();
-        app.getRoutineRepository().getRoutineCycles(id,0,10,"id","asc").observe(getViewLifecycleOwner(), r -> {
-            if (r.getStatus() == Status.SUCCESS) {//get cycles within routine
-                PagedList<Cycle> cyclePage = r.getData();
+        app.getCycleRepository().getCycleExercises(cycleId,0,10,"exerciseId","asc").observe(getViewLifecycleOwner(),e->{
+            if(e.getStatus()==Status.SUCCESS){
+                PagedList<Exercise> exercisePagedList=e.getData();
+                if(exercisePagedList!=null){
+                    ArrayList<Exercise> exercises=(ArrayList<Exercise>) exercisePagedList.getContent();
+                    exercises.forEach(exercise -> {
+                        ExerciseCard exerciseCard=new ExerciseCard(exercise.getExercise().getName(),
+                                exercise.getDuration(),exercise.getRepetitions());
+                        exerciseCards.add(exerciseCard);
+                    });
+                }
+            }else{
+                defaultResourceHandler(e);
+            }
+        });
+    }*/
+    void getWorkoutCycles(){
+        App app = (App)requireActivity().getApplication();
+        app.getRoutineRepository().getRoutineCycles(id,0,10,"id","asc").observe(getViewLifecycleOwner(), e -> {
+            if (e.getStatus() == Status.SUCCESS) {
+                PagedList<Cycle> cyclePage = e.getData();
                 if(cyclePage != null) {
                     ArrayList<Cycle> cycles= (ArrayList<Cycle>)cyclePage.getContent();
+                    ArrayList<CycleCard> workoutCycles=new ArrayList<>();
                     cycles.forEach(cycle -> {
-                        app.getCycleRepository().getCycleExercises(cycle.getId(),0,10,"exerciseId","asc").observe(getViewLifecycleOwner(),e->{
-                            if(e.getStatus()==Status.SUCCESS){//get exercises within cycle
-                                PagedList<Exercise> exercisePage=e.getData();
-                                if(exercisePage!=null){
-                                    ArrayList<ExerciseCard> exercises_aux=new ArrayList<>();
-                                    ArrayList<Exercise> exercises=(ArrayList<Exercise>) exercisePage.getContent();
+                        app.getCycleRepository().getCycleExercises(cycle.getId(),0,10,"exerciseId","asc").observe(getViewLifecycleOwner(),f->{
+                            if(f.getStatus()==Status.SUCCESS){
+                                PagedList<Exercise> exercisePagedList=f.getData();
+                                if(exercisePagedList!=null){
+                                    ArrayList<Exercise> exercises=(ArrayList<Exercise>) exercisePagedList.getContent();
+                                    ArrayList<ExerciseCard> exerciseCards=new ArrayList<>();
                                     exercises.forEach(exercise -> {
-                                        app.getExerciseRepository().getExerciseImage(exercise.getExercise().getId(),1).observe(getViewLifecycleOwner(),f->{
-                                            if(f.getStatus()==Status.SUCCESS){//get image within exercise
-                                                assert f.getData() != null;
-                                                exercises_aux.add(new ExerciseCard(exercise.getExercise().getName(),
-                                                            exercise.getDuration(),exercise.getRepetitions(),f.getData().getUrl()));
-                                            } else {
-                                                defaultResourceHandler(f);
-                                            }
-                                        });
+                                        ExerciseCard exerciseCard=new ExerciseCard(exercise.getExercise().getName(),
+                                                exercise.getDuration(),exercise.getRepetitions());
+                                        exerciseCards.add(exerciseCard);
                                     });
                                     if(cycle.getType().compareTo("warmup")==0){
-                                        warmupCycle=new CycleCard(cycle.getId(),cycle.getName(),cycle.getRepetitions(),exercises_aux);
-
+                                        warmupCycle=new CycleCard(cycle.getId(),cycle.getName(),cycle.getRepetitions(),exerciseCards);
                                     }else if(cycle.getType().compareTo("cooldown")==0){
-                                        cooldownCycle=new CycleCard(cycle.getId(),cycle.getName(),cycle.getRepetitions(),exercises_aux);
+                                        cooldownCycle=new CycleCard(cycle.getId(),cycle.getName(),cycle.getRepetitions(),exerciseCards);
                                     }else{
-                                        workoutCycles.add(new CycleCard(cycle.getId(), cycle.getName(),cycle.getRepetitions(),exercises_aux));
+                                        CycleCard cycleCard=new CycleCard(cycle.getId(),cycle.getName(),cycle.getRepetitions(),exerciseCards);
+                                        workoutCycles.add(cycleCard);
                                     }
                                 }
-                            }else {
-                                defaultResourceHandler(e);
+                            }else{
+                                defaultResourceHandler(f);
                             }
                         });
                     });
                     adapter = new CycleCardAdapter(workoutCycles);
                     cycleRecycler.setAdapter(adapter);
                 }
-            } else {
-                defaultResourceHandler(r);
+            }else {
+                defaultResourceHandler(e);
             }
         });
     }
+
 }
