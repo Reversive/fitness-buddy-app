@@ -38,7 +38,9 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white" />
 
-            <include layout="@layout/routine_cycle_item" />
+            <include
+                android:id="@+id/warmup_cycle"
+                layout="@layout/routine_cycle_item" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/cycle_title2"
@@ -78,19 +80,21 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white" />
 
-            <include layout="@layout/routine_cycle_item" />
+            <include
+                android:id="@+id/cooldown_cycle"
+                layout="@layout/routine_cycle_item" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/routine_executor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_margin="16dp"
+                android:backgroundTint="@color/purple_web_secondary"
+                android:src="@drawable/ic_play_arrow_24"
+                app:iconTint="@color/white" />
 
         </LinearLayout>
     </ScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/extended_fab"
-        android:layout_width="wrap_content"
-        android:backgroundTint="@color/purple_web_secondary"
-        app:iconTint="@color/white"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_gravity="bottom|center"
-        android:src="@drawable/ic_play_arrow_24"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

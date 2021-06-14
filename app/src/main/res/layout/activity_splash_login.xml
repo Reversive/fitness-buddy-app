@@ -60,7 +60,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/muli"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,7 +86,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/muli"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,12 +106,12 @@
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/login_progress_bar"
             android:layout_width="match_parent"
-            app:indicatorColor="@color/white"
-            app:trackThickness="8dp"
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="invisible"
-            app:showAnimationBehavior="outward" />
+            app:indicatorColor="@color/white"
+            app:showAnimationBehavior="outward"
+            app:trackThickness="8dp" />
 
         <Button
             android:id="@+id/login_do_btn"

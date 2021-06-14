@@ -16,26 +16,28 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/cycle_name"
+            android:id="@+id/exercise_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/muli_black"
             android:padding="5dp"
-            android:text="@string/cycle_name"
+            android:text="@string/exercise_name"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="@color/light_white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/exercise"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/exercise_image"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                tools:ignore="ContentDescription"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="17dp"
                 android:layout_marginEnd="15dp"
                 android:fontFamily="@font/muli_black"
                 android:text="@string/duration_number"
@@ -56,6 +59,7 @@
                 android:textSize="5sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/exercise_repetitions"
                 app:layout_constraintTop_toBottomOf="@+id/exercise_duration"
                 app:layout_constraintVertical_bias="0.13"
                 tools:ignore="SmallSp" />
@@ -65,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="10dp"
                 android:fontFamily="@font/muli_black"
                 android:text="@string/repetitions_number"
                 android:textAppearance="?attr/textAppearanceHeadline6"
@@ -84,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="35dp"
                 android:fontFamily="@font/muli_black"
                 android:text="@string/exercise_repetitions"
@@ -100,6 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="35dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/muli_black"
@@ -108,6 +113,7 @@
                 android:textColor="@color/light_white"
                 android:textSize="5sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/exercise_repetitions"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="SmallSp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
