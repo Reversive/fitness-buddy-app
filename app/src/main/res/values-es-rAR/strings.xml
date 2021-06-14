@@ -69,4 +69,5 @@
 
     <string name="error">Error %1$s (%2$d)</string>
     <string name="loading">Cargando…</string>
+    <string name="fab_play_button">fab_play_button</string>
 </resources>

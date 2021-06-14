@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/purple_web"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/purple_web">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,9 +15,11 @@
 
         <TextView
             android:id="@+id/exerciseName"
+            android:layout_marginTop="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:fontFamily="@font/muli_black"
             android:text="@string/default_exercise_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textColor="#FFFFFF" />
@@ -40,13 +42,12 @@
                     android:layout_width="351dp"
                     android:layout_height="232dp"
                     android:layout_gravity="center_horizontal"
+                    app:enableAutomaticInitialization="false"
+                    app:showFullScreenButton="false"
                     app:showSeekBar="false"
                     app:showVideoCurrentTime="false"
                     app:showVideoDuration="false"
-                    app:showYouTubeButton="false"
-                    app:enableAutomaticInitialization="false"
-                    app:showFullScreenButton="false"
-                    />
+                    app:showYouTubeButton="false" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -71,8 +72,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -85,6 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:fontFamily="@font/muli_black"
                     android:text="@string/default_reps_title"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textColor="#FFFFFF" />
@@ -94,8 +96,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:fontFamily="@font/muli_black"
                     android:text="@string/default_reps"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                     android:textColor="#FFFFFF" />
 
             </LinearLayout>
@@ -109,6 +112,7 @@
                 <TextView
                     android:id="@+id/timerText"
                     android:layout_width="match_parent"
+                    android:fontFamily="@font/muli_black"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/default_timer_title"
@@ -118,10 +122,11 @@
                 <TextView
                     android:id="@+id/timerCounter"
                     android:layout_width="match_parent"
+                    android:fontFamily="@font/muli_black"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/default_timer_value"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                     android:textColor="#FFFFFF" />
             </LinearLayout>
 
@@ -134,8 +139,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -148,11 +153,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:backgroundTint="@color/white"
                     android:clickable="true"
+                    android:contentDescription="@string/default_fab_back_desc"
+                    android:tint="@color/purple_web"
                     android:visibility="invisible"
-                    app:rippleColor="#FFFFFF"
-                    app:srcCompat="@android:drawable/ic_media_previous"
-                    android:contentDescription="@string/default_fab_back_desc" />
+                    app:borderWidth="0dp"
+                    app:srcCompat="@drawable/ic_skip_previous" />
             </LinearLayout>
 
             <LinearLayout
@@ -162,14 +169,18 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:layout_gravity="center"
                     android:id="@+id/toggleExerciseBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/white"
                     android:clickable="true"
-                    app:srcCompat="@android:drawable/ic_media_pause"
-                    android:contentDescription="@string/default_fab_pause_desc" />
+                    android:contentDescription="@string/default_fab_pause_desc"
+                    android:tint="@color/purple_web"
+                    app:borderWidth="0dp"
+                    app:srcCompat="@drawable/ic_pause" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -177,13 +188,16 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:layout_gravity="center"
                     android:id="@+id/nextExerciseBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/white"
                     android:clickable="true"
-                    app:srcCompat="@android:drawable/ic_media_next"
-                    android:contentDescription="@string/default_fab_next_desc" />
+                    android:contentDescription="@string/default_fab_next_desc"
+                    android:tint="@color/purple_web"
+                    app:borderWidth="0dp"
+                    app:srcCompat="@drawable/ic_skip_next" />
             </LinearLayout>
         </LinearLayout>
 

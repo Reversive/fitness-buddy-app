@@ -2,14 +2,19 @@ package ar.edu.itba.fitness.buddy.navigation.routine;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +22,8 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -42,6 +49,7 @@ public class RoutinePreviewFragment extends Fragment {
     private RecyclerView cycleRecycler;
     private RecyclerView.Adapter<CycleCardAdapter.ViewHolder> adapter;
     private final int id;
+    private boolean isFavorite = false;
 
     public RoutinePreviewFragment(int id, String name) {
         this.id = id;
@@ -51,7 +59,18 @@ public class RoutinePreviewFragment extends Fragment {
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.name);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        inflater.inflate(R.menu.routine_preview_toolbar, menu);
+        MenuItem favItem = menu.findItem(R.id.action_favorite);
+        favItem.setOnMenuItemClickListener(menuItem -> {
+            menuItem.setIcon(R.drawable.ic_favorite);
+            return false;
+        });
     }
 
     @Override
