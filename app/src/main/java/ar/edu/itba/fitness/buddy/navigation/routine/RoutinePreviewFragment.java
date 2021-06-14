@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import ar.edu.itba.fitness.buddy.App;
@@ -36,6 +37,7 @@ import ar.edu.itba.fitness.buddy.api.model.Error;
 import ar.edu.itba.fitness.buddy.api.model.Exercise;
 import ar.edu.itba.fitness.buddy.api.model.Media;
 import ar.edu.itba.fitness.buddy.api.model.PagedList;
+import ar.edu.itba.fitness.buddy.api.model.Routine;
 import ar.edu.itba.fitness.buddy.api.repository.Resource;
 import ar.edu.itba.fitness.buddy.api.repository.Status;
 import ar.edu.itba.fitness.buddy.model.CycleCard;
@@ -57,7 +59,7 @@ public class RoutinePreviewFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.name);
@@ -67,8 +69,43 @@ public class RoutinePreviewFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
         inflater.inflate(R.menu.routine_preview_toolbar, menu);
         MenuItem favItem = menu.findItem(R.id.action_favorite);
+        favItem.setIcon(R.drawable.ic_favorite_border);
+        App app = (App)requireActivity().getApplication();
+        app.getFavoriteRepository().getFavorites(0, 10).observe(getViewLifecycleOwner(), f -> {
+            if(f.getStatus() == Status.SUCCESS) {
+                PagedList<Routine> favoritePagedList = f.getData();
+                if(favoritePagedList != null) {
+                    List<Routine> favoriteRoutines = new ArrayList<>(favoritePagedList.getContent());
+                    favoriteRoutines.forEach(r -> { if(r.getId() == this.id) {
+                        favItem.setIcon(R.drawable.ic_favorite);
+                        isFavorite = true;
+                    }});
+                }
+            } else {
+                defaultResourceHandler(f);
+            }
+        });
+
         favItem.setOnMenuItemClickListener(menuItem -> {
-            menuItem.setIcon(R.drawable.ic_favorite);
+            if(this.isFavorite) {
+                app.getFavoriteRepository().unsetFavorite(this.id).observe(getViewLifecycleOwner(), u -> {
+                    if(u.getStatus() == Status.SUCCESS)
+                        Toast.makeText(app, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    else
+                        defaultResourceHandler(u);
+                });
+                menuItem.setIcon(R.drawable.ic_favorite_border);
+                this.isFavorite = false;
+            } else {
+                app.getFavoriteRepository().setFavorite(this.id).observe(getViewLifecycleOwner(), u -> {
+                    if(u.getStatus() == Status.SUCCESS)
+                        Toast.makeText(app, "Added to favorites", Toast.LENGTH_SHORT).show();
+                    else
+                        defaultResourceHandler(u);
+                });
+                menuItem.setIcon(R.drawable.ic_favorite);
+                this.isFavorite = true;
+            }
             return false;
         });
     }

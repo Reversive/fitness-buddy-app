@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import ar.edu.itba.fitness.buddy.App;
@@ -51,6 +52,7 @@ public class FavoriteFragment extends Fragment implements RoutineCardAdapter.OnR
         routineRecycler = view.findViewById(R.id.favorite_recycler);
         routineRecycler.setHasFixedSize(true);
         routineRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        routineCards = new ArrayList<>();
         App app = (App)requireActivity().getApplication();
         app.getFavoriteRepository().getFavorites(0, 10).observe(getViewLifecycleOwner(), r -> {
             if (r.getStatus() == Status.SUCCESS) {
