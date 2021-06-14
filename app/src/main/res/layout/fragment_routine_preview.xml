@@ -5,7 +5,7 @@
     android:id="@+id/routinePreview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_500"
+    android:background="@color/purple_web"
     tools:context=".navigation.routine.RoutinePreviewFragment" >
 
     <ScrollView
@@ -17,16 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/routine_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/muli_black"
-                android:textSize="35sp"
-                android:padding="10dp"
-                android:text="@string/default_card_title"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="@color/light_white" />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/cycle_title1"

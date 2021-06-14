@@ -7,4 +7,5 @@
         android:icon="@drawable/ic_search_toolbar"
         app:showAsAction="always|collapseActionView"
         />
+
 </menu>

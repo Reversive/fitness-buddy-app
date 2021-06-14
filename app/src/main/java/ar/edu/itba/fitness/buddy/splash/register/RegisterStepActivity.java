@@ -99,9 +99,21 @@ public class RegisterStepActivity extends AppCompatActivity {
         if(!validateGender() || !validateAge() ) return;
         selectedGender = findViewById(radioGroup.getCheckedRadioButtonId());
         String genderText = selectedGender.getText().toString();
+        switch (genderText) {
+            case "Masculino":
+                genderText = "Male";
+                break;
+            case "Femenino":
+                genderText = "Female";
+                break;
+            case "Otro":
+                genderText = "Other";
+                break;
+        }
         long date = getLongFromDatePicker(datePicker);
         User user = new User(emailText, passwordText, fullNameText, null, genderText.toLowerCase(), date, emailText, null, null, null);
         App app = (App)getApplication();
+        String finalGenderText = genderText;
         app.getUserRepository().register(user).observe(this, t -> {
             if(t.getStatus() == Status.SUCCESS) {
                 findViewById(R.id.register_progress_bar).setVisibility(View.GONE);
@@ -111,7 +123,7 @@ public class RegisterStepActivity extends AppCompatActivity {
                 intent.putExtra("password", passwordText);
                 intent.putExtra("height", heightText);
                 intent.putExtra("weight", weightText);
-                intent.putExtra("gender", genderText);
+                intent.putExtra("gender", finalGenderText);
                 intent.putExtra("date", dateText);
                 startActivity(intent);
             } else {

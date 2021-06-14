@@ -2,6 +2,8 @@ package ar.edu.itba.fitness.buddy.navigation.routine;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,7 +36,7 @@ import ar.edu.itba.fitness.buddy.model.ExerciseCard;
 
 public class RoutinePreviewFragment extends Fragment {
 
-    private CycleCard warmupCycle,cooldownCycle;
+    private CycleCard warmupCycle, cooldownCycle;
     private final String name;
     private final ArrayList<CycleCard> workoutCycles = new ArrayList<>();
     private RecyclerView cycleRecycler;
@@ -45,6 +47,13 @@ public class RoutinePreviewFragment extends Fragment {
         this.id = id;
         this.name=name;
     }
+
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.name);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routine_preview, container, false);

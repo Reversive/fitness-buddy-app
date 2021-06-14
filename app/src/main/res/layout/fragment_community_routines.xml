@@ -18,17 +18,5 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/extended_fab"
-        android:layout_width="wrap_content"
-        android:backgroundTint="@color/purple_web_secondary"
-        android:textColor="@color/white"
-        app:iconTint="@color/white"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_gravity="bottom|start"
-        android:text="@string/extended_fab_label"
-        app:icon="@drawable/ic_fab_filter"/>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">fitness-buddy-app</string>
+
+    <string name="splash_heading">¿Listo para\nestar en forma?</string>
+    <string name="splash_tag_line">Te ayudamos a cumplir tus objetivos!</string>
+    <string name="login">Iniciar Sesion</string>
+    <string name="signup">Registrarse</string>
+    <string name="splash_logo_alt">Logo Fitness Buddy</string>
+    <string name="splash_back_btn_alt">Boton Ir Atras</string>
+    <string name="login_enter_email">Ingresa Email</string>
+    <string name="login_enter_password">Ingresa Password</string>
+    <string name="login_remember_me">Recuerdame</string>
+    <string name="login_create_account">Crear Cuenta</string>
+    <string name="enter_full_name">Nombre Completo</string>
+
+    <string name="create_account">Crear\nCuenta</string>
+    <string name="signup_email">Email</string>
+    <string name="signup_password">Contraseña</string>
+    <string name="signup_height">Altura</string>
+    <string name="signup_weight">Peso</string>
+    <string name="signup_select_gender">Selecciona tu genero</string>
+    <string name="signup_select_age">Selecciona tu edad</string>
+    <string name="signup_male">Masculino</string>
+    <string name="signup_female">Femenino</string>
+    <string name="signup_other">Otro</string>
+    <string name="next">Siguiente</string>
+    <string name="signup_done">Finalizar</string>
+    <string name="signup_step_one">1/2</string>
+    <string name="signup_step_two">2/2</string>
+
+    <string name="verification_text">De Verificacion</string>
+    <string name="verification_description_text">Introduci el codigo de verificacion enviado a tu email</string>
+    <string name="verification_code_text">cod\nigo</string>
+    <string name="signup_verify_code_text">Verificar Codigo</string>
+
+    <string name="community_routines">Rutinas Comunitarias</string>
+    <string name="personal_routines">Rutinas Personales</string>
+    <string name="profile">Perfil</string>
+    <string name="favorites">Favoritos</string>
+
+    <string name="default_card_title">Titulo Rutina</string>
+    <string name="default_card_category">Categoria</string>
+    <string name="default_card_difficulty">Dificultad</string>
+    <string name="default_card_weight_field">Weight Loss</string>
+    <string name="default_card_difficulty_field">Rookie</string>
+
+    <string name="cycle_title1">Ciclo de Calentamiento</string>
+    <string name="cycle_title2">Ciclo de Ejercicio</string>
+    <string name="cycle_title3">Ciclo de Descanso</string>
+    <string name="cycle_series">Series</string>
+    <string name="cycle_name">Nombre de Ciclo</string>
+    <string name="exercise_name">Nombre Ejercicio</string>
+    <string name="exercise_duration">Duracion</string>
+    <string name="exercise_repetitions">Repeticiones</string>
+    <string name="repetitions_number">x</string>
+    <string name="duration_number">x</string>
+    <string name="series_number">x</string>
+
+    <string name="default_exercise_title">-</string>
+    <string name="default_exercise_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="default_reps_title">Reps</string>
+    <string name="default_reps">-</string>
+    <string name="default_timer_title">Timer</string>
+    <string name="default_timer_value">-</string>
+    <string name="default_fab_pause_desc">PAUSAR/REANUDAR</string>
+    <string name="default_fab_next_desc">SIGUIENTE</string>
+    <string name="default_fab_back_desc">ATRAS</string>
+
+    <string name="error">Error %1$s (%2$d)</string>
+    <string name="loading">Cargando…</string>
+</resources>

@@ -1,10 +1,14 @@
 package ar.edu.itba.fitness.buddy.navigation.community;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -36,7 +41,8 @@ import ar.edu.itba.fitness.buddy.api.model.Error;
 public class CommunityRoutinesFragment extends Fragment implements RoutineCardAdapter.OnRoutineCardListener{
     ArrayList<RoutineCard> routineCards;
     RecyclerView routineRecycler;
-    RecyclerView.Adapter<RoutineCardAdapter.RoutineCardViewHolder> adapter;
+    RoutineCardAdapter adapter;
+    Dialog filterDialog;
     public CommunityRoutinesFragment() {
     }
 
@@ -50,6 +56,50 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        MenuItem filterItem = menu.add(0, 1, 1, "filterSettings");
+        filterItem.setIcon(R.drawable.baseline_tune_24);
+        filterItem.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        filterItem.setVisible(false);
+
+        SearchView searchView = (SearchView) item.getActionView();
+
+        searchView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View view) {
+                filterItem.setVisible(true);
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View view) {
+                filterItem.setVisible(false);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        filterDialog = new Dialog(requireActivity());
+        filterItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                filterDialog.setContentView(R.layout.filter_dialog);
+                filterDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                filterDialog.show();
+                return false;
+            }
+        });
+
 
     }
 
