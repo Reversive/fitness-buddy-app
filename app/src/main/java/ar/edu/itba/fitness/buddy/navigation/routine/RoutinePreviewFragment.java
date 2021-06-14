@@ -1,5 +1,6 @@
 package ar.edu.itba.fitness.buddy.navigation.routine;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -69,6 +70,7 @@ public class RoutinePreviewFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
         inflater.inflate(R.menu.routine_preview_toolbar, menu);
         MenuItem favItem = menu.findItem(R.id.action_favorite);
+        MenuItem shareItem = menu.findItem(R.id.action_share);
         favItem.setIcon(R.drawable.ic_favorite_border);
         App app = (App)requireActivity().getApplication();
         app.getFavoriteRepository().getFavorites(0, 10).observe(getViewLifecycleOwner(), f -> {
@@ -107,6 +109,19 @@ public class RoutinePreviewFragment extends Fragment {
                 this.isFavorite = true;
             }
             return false;
+        });
+
+        shareItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "fitness-buddy://" + id);
+                sendIntent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
+                return false;
+            }
         });
     }
 

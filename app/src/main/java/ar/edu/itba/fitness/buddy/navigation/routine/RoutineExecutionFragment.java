@@ -1,12 +1,16 @@
 package ar.edu.itba.fitness.buddy.navigation.routine;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.service.autofill.RegexValidator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import java.security.DigestException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -66,6 +71,8 @@ public class RoutineExecutionFragment extends Fragment {
     private ArrayList<Cycle> cycles;
     private ArrayList<Exercise> exercises;
     private boolean noTimer;
+
+    Dialog finishDialog;
 
     public RoutineExecutionFragment(int routineId, String routineName) {
         this.routineId = routineId;
@@ -142,10 +149,9 @@ public class RoutineExecutionFragment extends Fragment {
                 cycleRounds = 0;
                 currentCycle++;
                 if (currentCycle == cycles.size()) { // finished routine
-                    Log.d("ROUTINE", "finished");
-                    FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
-                    transaction.replace(R.id.frame_container, new CommunityRoutinesFragment()); // Maybe show congratulations screen
-                    transaction.commit();
+                    finishDialog.setContentView(R.layout.routine_finish_dialog);
+                    finishDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    finishDialog.show();
                     return;
                 }
                 getCycleExercises();
@@ -240,6 +246,13 @@ public class RoutineExecutionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.routineName);
+        finishDialog = new Dialog(requireActivity());
+        Button finishButton = (Button)requireActivity().findViewById(R.id.finishRoutineButton);
+        /*finishButton.setOnClickListener(view -> {
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
+            transaction.replace(R.id.frame_container, new CommunityRoutinesFragment()); // Maybe show congratulations screen
+            transaction.commit();
+        });*/
     }
 
 
