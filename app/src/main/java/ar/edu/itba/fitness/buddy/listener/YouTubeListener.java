@@ -7,17 +7,21 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 
 public class YouTubeListener extends AbstractYouTubePlayerListener {
-    private final String video_id;
+    private String video_id;
+    private YouTubePlayer youTubePlayer;
 
-    public YouTubeListener(String video_id) {
-        this.video_id = video_id;
+    public YouTubeListener() {
+
     }
 
     @Override
     public void onReady(@NonNull YouTubePlayer youTubePlayer) {
         // loading the selected video into the YouTube Player
-        youTubePlayer.loadVideo(video_id, 0);
-        youTubePlayer.play();
+        this.youTubePlayer = youTubePlayer;
+        if (this.video_id != null) {
+            youTubePlayer.loadVideo(video_id, 0);
+            youTubePlayer.play();
+        }
     }
 
     @Override
@@ -26,6 +30,14 @@ public class YouTubeListener extends AbstractYouTubePlayerListener {
         super.onStateChange(youTubePlayer, state);
         if (state.equals(PlayerConstants.PlayerState.ENDED)) {
             youTubePlayer.seekTo(0); // restart video if it ended
+        }
+    }
+
+    public void playVideo(String video_id) {
+        this.video_id = video_id;
+        if (youTubePlayer != null) { // if it is null player is not yet loaded
+            youTubePlayer.loadVideo(video_id, 0);
+            youTubePlayer.play();
         }
     }
 }
