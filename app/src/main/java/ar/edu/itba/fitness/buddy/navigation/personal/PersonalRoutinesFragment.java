@@ -52,7 +52,7 @@ public class PersonalRoutinesFragment extends Fragment implements RoutineCardAda
         routineRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
         routineCards = new ArrayList<>();
         App app = (App)requireActivity().getApplication();
-        app.getUserRepository().getCurrentUserRoutines(null, null, 0, 10, "id", "asc").observe(getViewLifecycleOwner(), r -> {
+        app.getUserRepository().getCurrentUserRoutines(null, null, 0, 10, "date", "asc").observe(getViewLifecycleOwner(), r -> {
             if (r.getStatus() == Status.SUCCESS) {
                 PagedList<Routine> routinePage = r.getData();
                 if(routinePage != null) {

@@ -20,7 +20,7 @@ public class RoutineCardAdapter extends RecyclerView.Adapter<RoutineCardAdapter.
     private OnRoutineCardListener mOnRoutineCardListener;
 
     public RoutineCardAdapter(ArrayList<RoutineCard> routineCards, OnRoutineCardListener onRoutineCardListener) {
-        this.routineCards = routineCards;
+        this.routineCards = routineCards == null ? new ArrayList<>() : routineCards;
         this.mOnRoutineCardListener = onRoutineCardListener;
     }
 

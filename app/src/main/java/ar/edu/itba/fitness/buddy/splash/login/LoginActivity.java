@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Objects;
 
 import ar.edu.itba.fitness.buddy.App;
+import ar.edu.itba.fitness.buddy.AppPreferences;
 import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.api.model.ApiResponse;
 import ar.edu.itba.fitness.buddy.api.model.Credentials;
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         App app = ((App)getApplication());
         app.getUserRepository().login(credentials).observe(this, t -> {
             if(t.getStatus() == Status.SUCCESS) {
+                app.getPreferences().setAuthToken(Objects.requireNonNull(t.getData()).getToken());
                 findViewById(R.id.login_progress_bar).setVisibility(View.GONE);
                 Intent intent = new Intent(this, MainNavigationActivity.class);
                 startActivity(intent);
