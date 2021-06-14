@@ -2,6 +2,7 @@ package ar.edu.itba.fitness.buddy.navigation.routine;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.autofill.RegexValidator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,6 +122,7 @@ public class RoutineExecutionFragment extends Fragment {
     }
 
     public void loadExercise() {
+        videoPlayer.pauseVideo();
         if (currentExercise == 0 && currentCycle == 0 && cycleRounds == 0) {
             prevBtn.hide();
         } else {
@@ -178,18 +180,24 @@ public class RoutineExecutionFragment extends Fragment {
         }
 
         toggleBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_media_pause));
+        isPlaying = true;
         timerView.setText(timerStr);
     }
 
     private void loadExerciseVideo() {
         App app = (App) requireActivity().getApplication();
-        Log.d("GET EXERCISES", "got");
         app.getExerciseRepository().getExerciseVideos(exercises.get(currentExercise).getExercise().getId(), null,0, 1, null, null).observe(getViewLifecycleOwner(), t -> {
             if(t.getStatus() == Status.SUCCESS) {
-                Log.d("GET EXERCISES", "success");
+                Log.d("VIDEO", "success");
                 PagedList<Media> exercisePage = t.getData();
                 if(exercisePage != null && exercisePage.getSize() > 0) {
-                    String id = (exercisePage.getContent()).get(0).getUrl();
+                    String[] parsedUrl = (exercisePage.getContent()).get(0).getUrl().split("\\?v=");
+                    if (parsedUrl.length < 2) {
+                        videoPlayer.playVideo("");
+                        return;
+                    }
+                    String id = (exercisePage.getContent()).get(0).getUrl().split("\\?v=")[1].split("&")[0];
+                    Log.d("VIDEO", id);
                     videoPlayer.playVideo(id);
                 }
             } else {
@@ -210,6 +218,21 @@ public class RoutineExecutionFragment extends Fragment {
                 Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    public void onClickToggle(View view) {
+        if (noTimer)
+            return;
+
+        if (isPlaying) {
+            timer.pause();
+            toggleBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_media_play));
+        } else {
+            timer.play();
+            toggleBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_media_pause));
+        }
+
+        isPlaying = !isPlaying;
     }
 
     @Override
@@ -249,19 +272,7 @@ public class RoutineExecutionFragment extends Fragment {
             loadExercise();
         });
 
-        toggleBtn.setOnClickListener(v -> {
-            if (noTimer)
-                return;
-
-            if (isPlaying) {
-                timer.pause();
-                toggleBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_media_play));
-            } else {
-                timer.play();
-                toggleBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_media_pause));
-            }
-            isPlaying = !isPlaying;
-        });
+        toggleBtn.setOnClickListener(this::onClickToggle);
 
         videoPlayer = new YouTubeListener();
         videoView.initialize(videoPlayer);

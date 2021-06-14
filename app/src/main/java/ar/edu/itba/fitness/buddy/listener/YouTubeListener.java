@@ -33,6 +33,11 @@ public class YouTubeListener extends AbstractYouTubePlayerListener {
         }
     }
 
+    public void pauseVideo() {
+        if (youTubePlayer != null)
+            youTubePlayer.pause();
+    }
+
     public void playVideo(String video_id) {
         this.video_id = video_id;
         if (youTubePlayer != null) { // if it is null player is not yet loaded
