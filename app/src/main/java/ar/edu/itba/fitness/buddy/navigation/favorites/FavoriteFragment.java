@@ -70,7 +70,6 @@ public class FavoriteFragment extends Fragment implements RoutineCardAdapter.OnR
 
         return view;
     }
-
     private void defaultResourceHandler(Resource<?> resource) {
         switch (resource.getStatus()) {
             case LOADING:
@@ -82,12 +81,11 @@ public class FavoriteFragment extends Fragment implements RoutineCardAdapter.OnR
                 break;
         }
     }
-
     @Override
     public void onRoutineCardClick(int position) {
         RoutineCard clickedRoutine = routineCards.get(position);
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
-        transaction.replace(R.id.frame_container, new RoutinePreviewFragment());
+        transaction.replace(R.id.frame_container, new RoutinePreviewFragment(clickedRoutine.getId(), clickedRoutine.getTitle()));
         transaction.commit();
         // Send info to other fragment/activity to show routine info
         // Launch fragment/activity

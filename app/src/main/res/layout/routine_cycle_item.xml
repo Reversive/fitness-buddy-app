@@ -58,19 +58,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="417dp"
-            android:layout_height="232dp">
+            android:layout_width="380dp"
+            android:layout_height="220dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/exercise_recycler"
-                android:layout_width="326dp"
-                android:layout_height="197dp"
+                android:layout_width="345dp"
+                android:layout_height="188dp"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.296"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.542">
+                app:layout_constraintTop_toTopOf="parent">
 
             </androidx.recyclerview.widget.RecyclerView>
 

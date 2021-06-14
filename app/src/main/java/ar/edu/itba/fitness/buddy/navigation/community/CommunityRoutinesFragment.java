@@ -97,7 +97,7 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
     public void onRoutineCardClick(int position) {
         RoutineCard clickedRoutine = routineCards.get(position);
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
-        transaction.replace(R.id.frame_container, new RoutinePreviewFragment());
+        transaction.replace(R.id.frame_container, new RoutinePreviewFragment(clickedRoutine.getId(),clickedRoutine.getTitle()));
         transaction.commit();
     }
 }
