@@ -5,6 +5,7 @@ import android.app.Application;
 import ar.edu.itba.fitness.buddy.api.repository.CycleRepository;
 import ar.edu.itba.fitness.buddy.api.repository.ExerciseRepository;
 import ar.edu.itba.fitness.buddy.api.repository.FavoriteRepository;
+import ar.edu.itba.fitness.buddy.api.repository.ReviewRepository;
 import ar.edu.itba.fitness.buddy.api.repository.RoutineRepository;
 import ar.edu.itba.fitness.buddy.api.repository.UserRepository;
 
@@ -18,6 +19,12 @@ public class App extends Application {
     private CycleRepository cycleRepository;
     private FavoriteRepository favoriteRepository;
     private ExerciseRepository exerciseRepository;
+
+    public ReviewRepository getReviewRepository() {
+        return reviewRepository;
+    }
+
+    private ReviewRepository reviewRepository;
 
     public RoutineRepository getRoutineRepository() {
         return routineRepository;
@@ -50,6 +57,7 @@ public class App extends Application {
         cycleRepository = new CycleRepository(this);
         favoriteRepository = new FavoriteRepository(this);
         exerciseRepository = new ExerciseRepository(this);
+        reviewRepository = new ReviewRepository(this);
     }
 }
 

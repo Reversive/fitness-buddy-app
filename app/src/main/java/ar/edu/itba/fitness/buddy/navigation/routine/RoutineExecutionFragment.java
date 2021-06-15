@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Rating;
 import android.os.Bundle;
 import android.service.autofill.RegexValidator;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ import ar.edu.itba.fitness.buddy.api.model.Error;
 import ar.edu.itba.fitness.buddy.api.model.Exercise;
 import ar.edu.itba.fitness.buddy.api.model.Media;
 import ar.edu.itba.fitness.buddy.api.model.PagedList;
+import ar.edu.itba.fitness.buddy.api.model.Review;
 import ar.edu.itba.fitness.buddy.api.model.Routine;
 import ar.edu.itba.fitness.buddy.api.repository.ExerciseRepository;
 import ar.edu.itba.fitness.buddy.api.repository.Resource;
@@ -148,10 +151,14 @@ public class RoutineExecutionFragment extends Fragment {
             if (cycleRounds == cycles.get(currentCycle).getRepetitions() - 1) {
                 cycleRounds = 0;
                 currentCycle++;
-                if (currentCycle == cycles.size()) { // finished routine
+                if (currentCycle == cycles.size()) {
                     finishDialog.setContentView(R.layout.routine_finish_dialog);
                     finishDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     finishDialog.show();
+                    Button finishButton = finishDialog.findViewById(R.id.finishRoutineButton);
+                    RatingBar ratingBar = finishDialog.findViewById(R.id.routineFinishRatingBar);
+                    finishButton.setOnClickListener(new FinishButtonListener());
+                    ratingBar.setOnRatingBarChangeListener(new RoutineBarListener());
                     return;
                 }
                 getCycleExercises();
@@ -189,6 +196,31 @@ public class RoutineExecutionFragment extends Fragment {
         isPlaying = true;
         timerView.setText(timerStr);
     }
+
+    private class FinishButtonListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            finishDialog.dismiss();
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
+            transaction.replace(R.id.frame_container, new CommunityRoutinesFragment());
+            transaction.commit();
+        }
+    }
+
+    private class RoutineBarListener implements RatingBar.OnRatingBarChangeListener {
+
+        @Override
+        public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+            Review review = new Review(0, 0, (int)v, "", null);
+            App app = (App)requireActivity().getApplication();
+            app.getReviewRepository().addRoutineReview(routineId, review).observe(getViewLifecycleOwner(), r -> {
+                if(r.getStatus() == Status.ERROR) defaultResourceHandler(r);
+            });
+        }
+    }
+
+
 
     private void loadExerciseVideo() {
         App app = (App) requireActivity().getApplication();
@@ -247,12 +279,8 @@ public class RoutineExecutionFragment extends Fragment {
         setHasOptionsMenu(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.routineName);
         finishDialog = new Dialog(requireActivity());
-        Button finishButton = (Button)requireActivity().findViewById(R.id.finishRoutineButton);
-        /*finishButton.setOnClickListener(view -> {
-            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
-            transaction.replace(R.id.frame_container, new CommunityRoutinesFragment()); // Maybe show congratulations screen
-            transaction.commit();
-        });*/
+
+
     }
 
 
