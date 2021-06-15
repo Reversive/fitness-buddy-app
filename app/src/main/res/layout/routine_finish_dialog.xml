@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
     android:layout_height="match_parent"
     android:layout_gravity="center">
@@ -23,8 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muli_black"
+                android:text="@string/congratulations"
                 android:textColor="@color/purple_web"
-                android:text="Congratulations!"
                 android:textSize="34sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,9 +34,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@color/light_white"
                 android:numStars="5"
                 android:progressTint="@color/purple_web"
-                android:backgroundTint="@color/light_white"
                 android:secondaryProgressTint="@color/light_white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/muli_black"
-                android:text="Please rate this routine"
+                android:text="@string/please_rate_this_routine"
                 android:textColor="@color/purple_web"
                 android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -58,49 +57,50 @@
                 app:layout_constraintTop_toBottomOf="@+id/routineFinishRatingBar" />
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/appCompatImageButton"
+                android:id="@+id/dialog_add_to_fav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#00FFFFFF"
-                android:src="@drawable/ic_favorite"
-                android:tint="#673AB7"
+                android:src="@drawable/ic_favorite_border"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:tint="#673AB7"
+                />
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/appCompatImageButton2"
+                android:id="@+id/dialog_share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="148dp"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#00954242"
                 android:src="@drawable/ic_share"
-                android:tint="#673AB7"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/appCompatImageButton"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintStart_toEndOf="@+id/dialog_add_to_fav"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:tint="#673AB7" />
 
             <Button
                 android:id="@+id/finishRoutineButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Done"
+                android:text="@string/done"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatImageButton2" />
+                app:layout_constraintTop_toBottomOf="@+id/dialog_share" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/favorite_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muli"
-                android:text="Add to favorites"
+                android:text="@string/add_to_favorites"
                 android:textColor="#673AB7"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatImageButton" />
+                app:layout_constraintTop_toBottomOf="@+id/dialog_add_to_fav" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -108,10 +108,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/muli"
-                android:text="Share"
+                android:text="@string/share"
                 android:textColor="#673AB7"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatImageButton2" />
+                app:layout_constraintTop_toBottomOf="@+id/dialog_share" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -74,6 +75,7 @@ public class RoutineExecutionFragment extends Fragment {
     private ArrayList<Cycle> cycles;
     private ArrayList<Exercise> exercises;
     private boolean noTimer;
+    private boolean isFavorite = false;
 
     Dialog finishDialog;
 
@@ -157,6 +159,10 @@ public class RoutineExecutionFragment extends Fragment {
                     finishDialog.show();
                     Button finishButton = finishDialog.findViewById(R.id.finishRoutineButton);
                     RatingBar ratingBar = finishDialog.findViewById(R.id.routineFinishRatingBar);
+                    AppCompatImageButton shareButton = finishDialog.findViewById(R.id.dialog_share);
+                    AppCompatImageButton favoriteButton = finishDialog.findViewById(R.id.dialog_add_to_fav);
+                    shareButton.setOnClickListener(new ShareButtonLister());
+                    favoriteButton.setOnClickListener(new FavoriteButtonListener());
                     finishButton.setOnClickListener(new FinishButtonListener());
                     ratingBar.setOnRatingBarChangeListener(new RoutineBarListener());
                     return;
@@ -330,5 +336,29 @@ public class RoutineExecutionFragment extends Fragment {
         super.onDestroy();
         videoView.release();
         timer.finish();
+    }
+
+    private class ShareButtonLister implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "fitness-buddy://" + routineId);
+            sendIntent.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+        }
+    }
+
+    private class FavoriteButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            AppCompatImageButton favButton = (AppCompatImageButton)view;
+            favButton.setBackgroundResource(R.drawable.ic_favorite);
+            App app = (App)requireActivity().getApplication();
+            app.getFavoriteRepository().setFavorite(routineId).observe(getViewLifecycleOwner(), f -> {
+                Toast.makeText(app, "Added to favorites", Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 }
