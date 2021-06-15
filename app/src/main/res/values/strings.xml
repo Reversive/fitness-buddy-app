@@ -75,6 +75,12 @@
     <string name="done">Done</string>
     <string name="congratulations">Congratulations!</string>
     <string name="please_rate_this_routine">Please rate this routine</string>
+    <string name="routine_execution_exercise_name">Name</string>
+    <string name="routine_execution_exercise_time">Time</string>
+    <string name="routine_execution_exercise_reps">Reps</string>
+    <string name="execution_list_item_name">-</string>
+    <string name="execution_list_item_time">-</string>
+    <string name="execution_list_item_reps">-</string>
 
     <string-array name="order_by_array">
         <item>Date</item>
