@@ -21,8 +21,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -95,6 +98,14 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
                 filterDialog.setContentView(R.layout.filter_dialog);
                 filterDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 filterDialog.show();
+                Spinner orderBySpinner = (Spinner) filterDialog.findViewById(R.id.order_by_spinner);
+                Spinner orderBySpinnerDirection = (Spinner) filterDialog.findViewById(R.id.order_by_direction_spinner);
+                ArrayAdapter<CharSequence> orderBySpinnerAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.order_by_array, android.R.layout.simple_spinner_dropdown_item);
+                ArrayAdapter<CharSequence> orderBySpinnerDirectionAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.order_by_direction_array, android.R.layout.simple_spinner_dropdown_item);
+                orderBySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                orderBySpinnerDirectionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                orderBySpinner.setAdapter(orderBySpinnerAdapter);
+                orderBySpinnerDirection.setAdapter(orderBySpinnerDirectionAdapter);
                 return false;
             }
         });

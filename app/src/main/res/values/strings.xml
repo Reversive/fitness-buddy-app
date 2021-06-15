@@ -76,5 +76,17 @@
     <string name="congratulations">Congratulations!</string>
     <string name="please_rate_this_routine">Please rate this routine</string>
 
+    <string-array name="order_by_array">
+        <item>Date</item>
+        <item>Rating</item>
+        <item>Difficulty</item>
+        <item>Category</item>
+    </string-array>
+
+    <string-array name="order_by_direction_array">
+        <item>ASC</item>
+        <item>DESC</item>
+    </string-array>
+
 
 </resources>

@@ -9,22 +9,55 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="20dp">
+        app:cardCornerRadius="20dp"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="30dp">
 
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/orderBy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TO-DO"
+                android:fontFamily="@font/muli_black"
+                android:text="Order By"
+                android:textColor="@color/purple_web"
                 android:textSize="34sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/order_by_spinner"
+                android:layout_width="150dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orderBy" />
+
+            <Spinner
+                android:id="@+id/order_by_direction_spinner"
+                android:layout_width="150dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/order_by_spinner"
+                app:layout_constraintTop_toBottomOf="@+id/orderBy" />
+
+            <TextView
+                android:id="@+id/filterBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/muli_black"
+                android:text="Filter By"
+                android:textColor="@color/purple_web"
+                android:textSize="34sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_by_spinner" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
