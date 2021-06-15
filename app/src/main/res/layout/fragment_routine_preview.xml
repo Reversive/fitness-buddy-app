@@ -17,8 +17,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/cycle_title1"
                 android:layout_width="match_parent"
@@ -29,9 +27,11 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white" />
 
-            <include
-                android:id="@+id/warmup_cycle"
-                layout="@layout/routine_cycle_item" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/warmup_cycle_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                 />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/cycle_title2"
@@ -43,23 +43,16 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/exercise_cycle_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="252dp">
+                android:layout_height="wrap_content"
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/cycle_recycler"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginBottom="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/cycle_title3"
@@ -71,23 +64,24 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white" />
 
-            <include
-                android:id="@+id/cooldown_cycle"
-                layout="@layout/routine_cycle_item" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/routine_executor"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cooldown_cycle_recycler"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:tint="@color/purple_web"
-                app:borderWidth="0dp"
-                android:layout_gravity="bottom|center"
-                android:backgroundTint="@color/white"
-                android:layout_margin="16dp"
-                android:contentDescription="@string/fab_play_button"
-                app:srcCompat="@drawable/ic_play_arrow_24"/>
-
+                 />
         </LinearLayout>
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/routine_executor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/purple_web"
+        app:borderWidth="0dp"
+        android:layout_gravity="bottom|center"
+        android:backgroundTint="@color/white"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/fab_play_button"
+        app:srcCompat="@drawable/ic_play_arrow_24"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
