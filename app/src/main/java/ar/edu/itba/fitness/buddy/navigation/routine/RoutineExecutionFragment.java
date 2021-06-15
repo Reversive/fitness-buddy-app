@@ -80,11 +80,15 @@ public class RoutineExecutionFragment extends Fragment {
     Dialog finishDialog;
 
     public RoutineExecutionFragment(int routineId, String routineName) {
+        this(routineId, routineName, 0, 0, 0);
+    }
+
+    public RoutineExecutionFragment(int routineId, String routineName, int currentCycle, int currentExercise, int cycleRounds) {
         this.routineId = routineId;
         this.routineName = routineName;
-        this.currentCycle = 0;
-        this.currentExercise = 0;
-        this.cycleRounds = 0;
+        this.currentCycle = currentCycle;
+        this.currentExercise = currentExercise;
+        this.cycleRounds = cycleRounds;
     }
 
     private void getCycles() {
@@ -227,7 +231,6 @@ public class RoutineExecutionFragment extends Fragment {
     }
 
 
-
     private void loadExerciseVideo() {
         App app = (App) requireActivity().getApplication();
         app.getExerciseRepository().getExerciseVideos(exercises.get(currentExercise).getExercise().getId(), null,0, 1, null, null).observe(getViewLifecycleOwner(), t -> {
@@ -285,8 +288,6 @@ public class RoutineExecutionFragment extends Fragment {
         setHasOptionsMenu(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.routineName);
         finishDialog = new Dialog(requireActivity());
-
-
     }
 
 
@@ -310,6 +311,7 @@ public class RoutineExecutionFragment extends Fragment {
         prevBtn.setOnClickListener(v -> {
             currentExercise--;
             timer.finish();
+            nextBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_media_next));
             loadExercise();
         });
 

@@ -1,5 +1,6 @@
 package ar.edu.itba.fitness.buddy.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,12 @@ import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.model.ExerciseItem;
 
 public class ExerciseItemAdapter extends RecyclerView.Adapter<ExerciseItemAdapter.ViewHolder> {
-    ArrayList<ExerciseItem> exercises;
+    private final OnExerciseItemListener exerciseListener;
+    private ArrayList<ExerciseItem> exercises;
 
-    public ExerciseItemAdapter(ArrayList<ExerciseItem> exercises) {
+    public ExerciseItemAdapter(ArrayList<ExerciseItem> exercises, OnExerciseItemListener exerciseListener) {
         this.exercises = exercises;
+        this.exerciseListener = exerciseListener;
     }
 
     @NonNull
@@ -50,13 +53,23 @@ public class ExerciseItemAdapter extends RecyclerView.Adapter<ExerciseItemAdapte
         return exercises.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         AppCompatTextView name, repetitions, duration;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.exercise_name);
             repetitions = itemView.findViewById(R.id.repetitions_number);
             duration = itemView.findViewById(R.id.duration_number);
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) {
+            exerciseListener.onExerciseClick(getBindingAdapterPosition());
+        }
+    }
+
+    public interface OnExerciseItemListener {
+        void onExerciseClick(int position);
     }
 }

@@ -9,7 +9,6 @@ public class ExerciseItem {
         this.name = exercise_name;
         this.duration = duration;
         this.repetitions = repetitions;
-
     }
 
     public String getName() {
