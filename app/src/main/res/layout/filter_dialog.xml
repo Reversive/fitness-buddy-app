@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="30dp">
+            android:padding="20dp">
 
 
             <TextView
@@ -32,7 +32,7 @@
             <Spinner
                 android:id="@+id/order_by_spinner"
                 android:layout_width="150dp"
-                android:layout_height="24dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/orderBy" />
@@ -40,23 +40,20 @@
             <Spinner
                 android:id="@+id/order_by_direction_spinner"
                 android:layout_width="150dp"
-                android:layout_height="24dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/order_by_spinner"
                 app:layout_constraintTop_toBottomOf="@+id/orderBy" />
 
-            <TextView
-                android:id="@+id/filterBy"
+            <Button
+                android:id="@+id/order_by_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/muli_black"
-                android:text="Filter By"
-                android:textColor="@color/purple_web"
-                android:textSize="34sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_by_spinner" />
+                android:text="Done"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_by_direction_spinner" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

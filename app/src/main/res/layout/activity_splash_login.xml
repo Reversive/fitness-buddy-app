@@ -91,15 +91,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <CheckBox
-                style="@style/Widget.AppCompat.CompoundButton.CheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:buttonTint="@color/white"
-                android:fontFamily="@font/muli"
-                android:text="@string/login_remember_me"
-                android:textColor="@color/white" />
 
         </LinearLayout>
 

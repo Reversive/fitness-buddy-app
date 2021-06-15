@@ -21,12 +21,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 import ar.edu.itba.fitness.buddy.App;
@@ -36,6 +40,10 @@ import ar.edu.itba.fitness.buddy.api.model.PagedList;
 import ar.edu.itba.fitness.buddy.api.model.Routine;
 import ar.edu.itba.fitness.buddy.api.repository.Resource;
 import ar.edu.itba.fitness.buddy.api.repository.Status;
+import ar.edu.itba.fitness.buddy.comparator.RoutineCategoryComparator;
+import ar.edu.itba.fitness.buddy.comparator.RoutineDifficultyComparator;
+import ar.edu.itba.fitness.buddy.comparator.RoutineRankingComparator;
+import ar.edu.itba.fitness.buddy.comparator.RoutineTitleComparator;
 import ar.edu.itba.fitness.buddy.model.RoutineCard;
 import ar.edu.itba.fitness.buddy.navigation.routine.RoutinePreviewFragment;
 import ar.edu.itba.fitness.buddy.api.model.Error;
@@ -45,6 +53,9 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
     RecyclerView routineRecycler;
     RoutineCardAdapter adapter;
     Dialog filterDialog;
+    Comparator<RoutineCard> orderByComparator;
+    String orderByDirection = "ASC";
+    Button doneButton;
     public CommunityRoutinesFragment() {
     }
 
@@ -92,25 +103,22 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
         });
 
         filterDialog = new Dialog(requireActivity());
-        filterItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                filterDialog.setContentView(R.layout.filter_dialog);
-                filterDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                filterDialog.show();
-                Spinner orderBySpinner = (Spinner) filterDialog.findViewById(R.id.order_by_spinner);
-                Spinner orderBySpinnerDirection = (Spinner) filterDialog.findViewById(R.id.order_by_direction_spinner);
-                ArrayAdapter<CharSequence> orderBySpinnerAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.order_by_array, android.R.layout.simple_spinner_dropdown_item);
-                ArrayAdapter<CharSequence> orderBySpinnerDirectionAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.order_by_direction_array, android.R.layout.simple_spinner_dropdown_item);
-                orderBySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                orderBySpinnerDirectionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                orderBySpinner.setAdapter(orderBySpinnerAdapter);
-                orderBySpinnerDirection.setAdapter(orderBySpinnerDirectionAdapter);
-                return false;
-            }
+        filterItem.setOnMenuItemClickListener(menuItem -> {
+            filterDialog.setContentView(R.layout.filter_dialog);
+            filterDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            filterDialog.show();
+            Spinner orderBySpinner = (Spinner) filterDialog.findViewById(R.id.order_by_spinner);
+            Spinner orderBySpinnerDirection = (Spinner) filterDialog.findViewById(R.id.order_by_direction_spinner);
+            orderBySpinner.setOnItemSelectedListener(new OrderBySelectedListener());
+            orderBySpinnerDirection.setOnItemSelectedListener(new OrderByDirectionSelectedListener());
+            ArrayAdapter<CharSequence> orderBySpinnerAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.order_by_array, R.layout.spinner_item);
+            ArrayAdapter<CharSequence> orderBySpinnerDirectionAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.order_by_direction_array, R.layout.spinner_item);
+            orderBySpinner.setAdapter(orderBySpinnerAdapter);
+            orderBySpinnerDirection.setAdapter(orderBySpinnerDirectionAdapter);
+            doneButton = (Button)filterDialog.findViewById(R.id.order_by_button);
+            doneButton.setOnClickListener(view -> filterDialog.dismiss());
+            return false;
         });
-
-
     }
 
     @Override
@@ -159,5 +167,63 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
         transaction.replace(R.id.frame_container, new RoutinePreviewFragment(clickedRoutine.getId(),clickedRoutine.getTitle()));
         transaction.commit();
+    }
+
+    private class OrderBySelectedListener implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            String currentItem = parent.getItemAtPosition(pos).toString();
+
+            switch (currentItem) {
+                case "Title":
+                    orderByComparator = new RoutineTitleComparator();
+                    break;
+                case "Rating":
+                    orderByComparator = new RoutineRankingComparator();
+                    break;
+                case "Difficulty":
+                    orderByComparator = new RoutineDifficultyComparator();
+                    break;
+                case "Category":
+                    orderByComparator = new RoutineCategoryComparator();
+                    break;
+            }
+            routineCards.sort(orderByComparator);
+            adapter.notifyDataSetChanged();
+            routineRecycler.invalidate();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    }
+
+    private class OrderByDirectionSelectedListener implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            String selectedDirection = adapterView.getItemAtPosition(i).toString();
+            if(selectedDirection.equals("ASC")) {
+                if(!orderByDirection.equals(selectedDirection)) {
+                    orderByComparator = Collections.reverseOrder(orderByComparator);
+                    orderByDirection = "ASC";
+                }
+            } else if(selectedDirection.equals("DESC")) {
+                if(!orderByDirection.equals(selectedDirection)) {
+                    orderByComparator = Collections.reverseOrder(orderByComparator);
+                    orderByDirection = "DESC";
+                }
+            }
+            routineCards.sort(orderByComparator);
+            adapter.notifyDataSetChanged();
+            routineRecycler.invalidate();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+            orderByDirection = "ASC";
+        }
     }
 }

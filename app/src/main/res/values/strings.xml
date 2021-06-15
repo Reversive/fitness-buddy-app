@@ -83,7 +83,7 @@
     <string name="execution_list_item_reps">-</string>
 
     <string-array name="order_by_array">
-        <item>Date</item>
+        <item>Title</item>
         <item>Rating</item>
         <item>Difficulty</item>
         <item>Category</item>
