@@ -40,8 +40,8 @@ public class CycleCardAdapter extends RecyclerView.Adapter<CycleCardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         CycleCard cycleCard = listCycles.get(position);
-        holder.cycle_name.setText(cycleCard.getName());
-        holder.series_number.setText(String.valueOf( cycleCard.getSeries_number()));
+        //holder.cycle_name.setText(cycleCard.getName());
+       // holder.series_number.setText(String.valueOf( cycleCard.getSeries_number()));
 
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
         holder.nested_rv.setLayoutManager(layoutManager);
