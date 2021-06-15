@@ -26,6 +26,9 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +58,7 @@ public class RoutinePreviewFragment extends Fragment {
 
     public RoutinePreviewFragment(int id, String name) {
         this.id = id;
-        this.name=name;
+        this.name = name;
     }
 
     @Override
@@ -71,16 +74,18 @@ public class RoutinePreviewFragment extends Fragment {
         MenuItem favItem = menu.findItem(R.id.action_favorite);
         MenuItem shareItem = menu.findItem(R.id.action_share);
         favItem.setIcon(R.drawable.ic_favorite_border);
-        App app = (App)requireActivity().getApplication();
+        App app = (App) requireActivity().getApplication();
         app.getFavoriteRepository().getFavorites(0, 10).observe(getViewLifecycleOwner(), f -> {
-            if(f.getStatus() == Status.SUCCESS) {
+            if (f.getStatus() == Status.SUCCESS) {
                 PagedList<Routine> favoritePagedList = f.getData();
-                if(favoritePagedList != null) {
+                if (favoritePagedList != null) {
                     List<Routine> favoriteRoutines = new ArrayList<>(favoritePagedList.getContent());
-                    favoriteRoutines.forEach(r -> { if(r.getId() == this.id) {
-                        favItem.setIcon(R.drawable.ic_favorite);
-                        isFavorite = true;
-                    }});
+                    favoriteRoutines.forEach(r -> {
+                        if (r.getId() == this.id) {
+                            favItem.setIcon(R.drawable.ic_favorite);
+                            isFavorite = true;
+                        }
+                    });
                 }
             } else {
                 defaultResourceHandler(f);
@@ -88,9 +93,9 @@ public class RoutinePreviewFragment extends Fragment {
         });
 
         favItem.setOnMenuItemClickListener(menuItem -> {
-            if(this.isFavorite) {
+            if (this.isFavorite) {
                 app.getFavoriteRepository().unsetFavorite(this.id).observe(getViewLifecycleOwner(), u -> {
-                    if(u.getStatus() == Status.SUCCESS)
+                    if (u.getStatus() == Status.SUCCESS)
                         Toast.makeText(app, "Removed from favorites", Toast.LENGTH_SHORT).show();
                     else
                         defaultResourceHandler(u);
@@ -99,7 +104,7 @@ public class RoutinePreviewFragment extends Fragment {
                 this.isFavorite = false;
             } else {
                 app.getFavoriteRepository().setFavorite(this.id).observe(getViewLifecycleOwner(), u -> {
-                    if(u.getStatus() == Status.SUCCESS)
+                    if (u.getStatus() == Status.SUCCESS)
                         Toast.makeText(app, "Added to favorites", Toast.LENGTH_SHORT).show();
                     else
                         defaultResourceHandler(u);
@@ -110,17 +115,15 @@ public class RoutinePreviewFragment extends Fragment {
             return false;
         });
 
-        shareItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "fitness-buddy://" + id);
-                sendIntent.setType("text/plain");
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
-                return false;
-            }
+        shareItem.setOnMenuItemClickListener(menuItem -> {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "hci://fitness-buddy.com/?" + id + "," + name);
+            sendIntent.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+            return false;
         });
     }
 
@@ -129,13 +132,16 @@ public class RoutinePreviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_routine_preview, container, false);
 
         FloatingActionButton routineExecutor = view.findViewById(R.id.routine_executor);
-        for(int i=0;i<3;i++){
-            switch (i){
-                case 0: cycleRecycler = view.findViewById(R.id.warmup_cycle_recycler);
+        for (int i = 0; i < 3; i++) {
+            switch (i) {
+                case 0:
+                    cycleRecycler = view.findViewById(R.id.warmup_cycle_recycler);
                     break;
-                case 1: cycleRecycler = view.findViewById(R.id.exercise_cycle_recycler);
+                case 1:
+                    cycleRecycler = view.findViewById(R.id.exercise_cycle_recycler);
                     break;
-                case 2: cycleRecycler = view.findViewById(R.id.cooldown_cycle_recycler);
+                case 2:
+                    cycleRecycler = view.findViewById(R.id.cooldown_cycle_recycler);
                     break;
             }
             cycleRecycler.setHasFixedSize(true);
@@ -148,7 +154,6 @@ public class RoutinePreviewFragment extends Fragment {
             transaction.replace(R.id.frame_container, new RoutineExecutionListFragment(this.id, this.name));
             transaction.commit();
         });
-
 
 
         return view;
@@ -166,69 +171,75 @@ public class RoutinePreviewFragment extends Fragment {
                 break;
         }
     }
-   /* ArrayList<ExerciseCard> getExercises(int cycleId){
-        ArrayList<ExerciseCard> exerciseCards=new ArrayList<>();
-        App app = (App)requireActivity().getApplication();
-        app.getCycleRepository().getCycleExercises(cycleId,0,10,"exerciseId","asc").observe(getViewLifecycleOwner(),e->{
-            if(e.getStatus()==Status.SUCCESS){
-                PagedList<Exercise> exercisePagedList=e.getData();
-                if(exercisePagedList!=null){
-                    ArrayList<Exercise> exercises=(ArrayList<Exercise>) exercisePagedList.getContent();
-                    exercises.forEach(exercise -> {
-                        ExerciseCard exerciseCard=new ExerciseCard(exercise.getExercise().getName(),
-                                exercise.getDuration(),exercise.getRepetitions());
-                        exerciseCards.add(exerciseCard);
+
+    /* ArrayList<ExerciseCard> getExercises(int cycleId){
+         ArrayList<ExerciseCard> exerciseCards=new ArrayList<>();
+         App app = (App)requireActivity().getApplication();
+         app.getCycleRepository().getCycleExercises(cycleId,0,10,"exerciseId","asc").observe(getViewLifecycleOwner(),e->{
+             if(e.getStatus()==Status.SUCCESS){
+                 PagedList<Exercise> exercisePagedList=e.getData();
+                 if(exercisePagedList!=null){
+                     ArrayList<Exercise> exercises=(ArrayList<Exercise>) exercisePagedList.getContent();
+                     exercises.forEach(exercise -> {
+                         ExerciseCard exerciseCard=new ExerciseCard(exercise.getExercise().getName(),
+                                 exercise.getDuration(),exercise.getRepetitions());
+                         exerciseCards.add(exerciseCard);
+                     });
+                 }
+             }else{
+                 defaultResourceHandler(e);
+             }
+         });
+     }*/
+    void getWorkoutCycles(int recyclerIndex) {
+        App app = (App) requireActivity().getApplication();
+        app.getRoutineRepository().getRoutineCycles(id, 0, 10, "id", "asc").observe(getViewLifecycleOwner(), e -> {
+            if (e.getStatus() == Status.SUCCESS) {
+                PagedList<Cycle> cyclePage = e.getData();
+                if (cyclePage != null) {
+                    ArrayList<Cycle> cycles = (ArrayList<Cycle>) cyclePage.getContent();
+                    ArrayList<CycleCard> workoutCycles = new ArrayList<>();
+                    cycles.forEach(cycle -> {
+                        app.getCycleRepository().getCycleExercises(cycle.getId(), 0, 10, "exerciseId", "asc").observe(getViewLifecycleOwner(), f -> {
+                            if (f.getStatus() == Status.SUCCESS) {
+                                PagedList<Exercise> exercisePagedList = f.getData();
+                                if (exercisePagedList != null) {
+                                    ArrayList<Exercise> exercises = (ArrayList<Exercise>) exercisePagedList.getContent();
+                                    ArrayList<ExerciseCard> exerciseCards = new ArrayList<>();
+                                    exercises.forEach(exercise -> {
+                                        ExerciseCard exerciseCard = new ExerciseCard(exercise.getExercise().getName(),
+                                                exercise.getDuration(), exercise.getRepetitions());
+                                        exerciseCards.add(exerciseCard);
+                                    });
+                                    switch (recyclerIndex) {
+                                        case 0:
+                                            if (cycle.getType().compareTo("warmup") == 0) {
+                                                workoutCycles.add(new CycleCard(cycle.getId(), cycle.getName(), cycle.getRepetitions(), exerciseCards));
+                                            }
+                                            break;
+                                        case 1:
+                                            workoutCycles.add(new CycleCard(cycle.getId(), cycle.getName(), cycle.getRepetitions(), exerciseCards));
+                                            break;
+                                        case 2:
+                                            if (cycle.getType().compareTo("cooldown") == 0) {
+                                                workoutCycles.add(new CycleCard(cycle.getId(), cycle.getName(), cycle.getRepetitions(), exerciseCards));
+                                            }
+                                            break;
+                                    }
+
+                                }
+                            } else {
+                                defaultResourceHandler(f);
+                            }
+                        });
                     });
+                    adapter = new CycleCardAdapter(workoutCycles);
+                    cycleRecycler.setAdapter(adapter);
                 }
-            }else{
+            } else {
                 defaultResourceHandler(e);
             }
         });
-    }*/
-   void getWorkoutCycles(int recyclerIndex){
-       App app = (App)requireActivity().getApplication();
-       app.getRoutineRepository().getRoutineCycles(id,0,10,"id","asc").observe(getViewLifecycleOwner(), e -> {
-           if (e.getStatus() == Status.SUCCESS) {
-               PagedList<Cycle> cyclePage = e.getData();
-               if(cyclePage != null) {
-                   ArrayList<Cycle> cycles= (ArrayList<Cycle>)cyclePage.getContent();
-                   ArrayList<CycleCard> workoutCycles=new ArrayList<>();
-                   cycles.forEach(cycle -> {
-                       app.getCycleRepository().getCycleExercises(cycle.getId(),0,10,"exerciseId","asc").observe(getViewLifecycleOwner(),f->{
-                           if(f.getStatus()==Status.SUCCESS){
-                               PagedList<Exercise> exercisePagedList=f.getData();
-                               if(exercisePagedList!=null){
-                                   ArrayList<Exercise> exercises=(ArrayList<Exercise>) exercisePagedList.getContent();
-                                   ArrayList<ExerciseCard> exerciseCards=new ArrayList<>();
-                                   exercises.forEach(exercise -> {
-                                       ExerciseCard exerciseCard=new ExerciseCard(exercise.getExercise().getName(),
-                                               exercise.getDuration(),exercise.getRepetitions());
-                                       exerciseCards.add(exerciseCard);
-                                   });
-                                   switch (recyclerIndex){
-                                       case 0: if(cycle.getType().compareTo("warmup")==0) {
-                                           workoutCycles.add(new CycleCard(cycle.getId(),cycle.getName(),cycle.getRepetitions(),exerciseCards));
-                                       }break;
-                                       case 1: workoutCycles.add(new CycleCard(cycle.getId(),cycle.getName(),cycle.getRepetitions(),exerciseCards));
-                                           break;
-                                       case 2:  if(cycle.getType().compareTo("cooldown")==0) {
-                                           workoutCycles.add(new CycleCard(cycle.getId(),cycle.getName(),cycle.getRepetitions(),exerciseCards));
-                                       }break;
-                                   }
-
-                               }
-                           }else{
-                               defaultResourceHandler(f);
-                           }
-                       });
-                   });
-                   adapter = new CycleCardAdapter(workoutCycles);
-                   cycleRecycler.setAdapter(adapter);
-               }
-           }else {
-               defaultResourceHandler(e);
-           }
-       });
-   }
+    }
 
 }

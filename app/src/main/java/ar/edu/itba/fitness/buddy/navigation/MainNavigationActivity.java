@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import ar.edu.itba.fitness.buddy.navigation.community.CommunityRoutinesFragment;
 import ar.edu.itba.fitness.buddy.navigation.favorites.FavoriteFragment;
 import ar.edu.itba.fitness.buddy.navigation.personal.PersonalRoutinesFragment;
 import ar.edu.itba.fitness.buddy.navigation.profile.ProfileFragment;
+import ar.edu.itba.fitness.buddy.navigation.routine.RoutinePreviewFragment;
 
 public class MainNavigationActivity extends AppCompatActivity {
 
@@ -40,7 +42,14 @@ public class MainNavigationActivity extends AppCompatActivity {
         Objects.requireNonNull(actionBar).setBackgroundDrawable(colorDrawable);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        if(savedInstanceState == null) loadFragment(communityRoutinesFragment);
+        Uri uri = this.getIntent().getData();
+        if(uri != null) {
+            String[] params = uri.getEncodedQuery().split(",");
+            int routineId = Integer.parseInt(params[0]);
+            loadFragment(new RoutinePreviewFragment(routineId, params[1]));
+        } else {
+            if (savedInstanceState == null) loadFragment(communityRoutinesFragment);
+        }
     }
 
 

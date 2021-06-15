@@ -13,7 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/theme.fitness.buddy.app"
         android:networkSecurityConfig="@xml/network_security_config">
-        <activity android:name=".navigation.MainNavigationActivity"/>
+        <activity android:name=".navigation.MainNavigationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="fitness-buddy.com"
+                    android:scheme="hci" />
+            </intent-filter>
+        </activity>
         <activity android:name=".splash.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
