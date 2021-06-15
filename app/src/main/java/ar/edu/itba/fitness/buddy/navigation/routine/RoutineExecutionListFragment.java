@@ -34,31 +34,48 @@ import ar.edu.itba.fitness.buddy.model.FullRoutine;
 import ar.edu.itba.fitness.buddy.model.RoutineCard;
 
 public class RoutineExecutionListFragment extends Fragment {
+    static int EXERCISES_SHOWN = 3;
 
     private final int routineId;
     private final String routineName;
     private ArrayList<ExerciseItem> exerciseItems;
     private FullRoutine rout;
     private ExerciseItemAdapter adapter;
+
+    private int currentCycle;
+    private int currentExercise;
+
     RecyclerView exerciseRecycler;
 
     public RoutineExecutionListFragment(int id, String name) {
         this.routineId = id;
         this.routineName = name;
+        this.currentCycle = 0;
+        this.currentExercise = 0;
     }
 
     private void fillExercises() {
-        for (int i = 0; i < rout.getCycles(); i++) {
-            ArrayList<Exercise> e = rout.getCycle(i).getExercises();
-            e.forEach(exercise ->
-                    exerciseItems.add(
-                            new ExerciseItem(
-                                    exercise.getExercise().getName(),
-                                    exercise.getDuration(),
-                                    exercise.getRepetitions()
-                            )
-                    )
-            );
+        int added = 0;
+        boolean done = false;
+        for (;currentCycle < rout.getCycles() && !done; currentCycle++) {
+            ArrayList<Exercise> e = rout.getCycle(currentCycle).getExercises();
+            for (;currentExercise < e.size() && !done; currentExercise++) {
+                Exercise exercise = e.get(currentExercise);
+                exerciseItems.add(
+                        new ExerciseItem(
+                                exercise.getExercise().getName(),
+                                exercise.getDuration(),
+                                exercise.getRepetitions()
+                        )
+                );
+                added++;
+                if (added == EXERCISES_SHOWN)
+                    done = true;
+            }
+
+            if (!done)
+                currentExercise = 0;
+
             adapter = new ExerciseItemAdapter(exerciseItems);
             exerciseRecycler.setAdapter(adapter);
         }

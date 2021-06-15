@@ -145,7 +145,7 @@ public class RoutinePreviewFragment extends Fragment {
 
         routineExecutor.setOnClickListener((l) -> {
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
-            transaction.replace(R.id.frame_container, new RoutineExecutionFragment(this.id, this.name));
+            transaction.replace(R.id.frame_container, new RoutineExecutionListFragment(this.id, this.name));
             transaction.commit();
         });
 
