@@ -43,21 +43,9 @@ public class MainNavigationActivity extends AppCompatActivity {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStackImmediate();
             Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
-        } else {
-            Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.logout_dialog);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.show();
-            Button cancel = dialog.findViewById(R.id.cancel_log_out);
-            Button logout = dialog.findViewById(R.id.submit_log_out);
-            cancel.setOnClickListener(view -> dialog.dismiss());
-            logout.setOnClickListener(view -> {
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                App app = (App)getApplication();
-                app.getPreferences().setAuthToken(null);
-                startActivity(i);
-            });
+            return;
         }
+        super.onBackPressed();
     }
 
     @Override
@@ -71,7 +59,7 @@ public class MainNavigationActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Uri uri = this.getIntent().getData();
-        if(uri != null) {
+        if (uri != null) {
             String[] params = uri.getEncodedQuery().split(",");
             int routineId = Integer.parseInt(params[0]);
             loadFragment(new RoutinePreviewFragment(routineId, params[1]));
