@@ -290,6 +290,7 @@ public class RoutineExecutionFragment extends Fragment {
         toggleBtn.setOnClickListener(this::onClickToggle);
 
         listViewBtn.setOnClickListener(v -> {
+            timer.finish();
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
             transaction.replace(R.id.frame_container, new RoutineExecutionListFragment(routineId, routineName, currentCycle, currentExercise,  currentRound));
             transaction.commit();
