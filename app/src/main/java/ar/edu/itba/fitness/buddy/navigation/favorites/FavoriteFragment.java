@@ -46,6 +46,13 @@ public class FavoriteFragment extends Fragment implements RoutineCardAdapter.OnR
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.favorites);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
@@ -88,6 +95,7 @@ public class FavoriteFragment extends Fragment implements RoutineCardAdapter.OnR
         RoutineCard clickedRoutine = routineCards.get(position);
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
         transaction.replace(R.id.frame_container, new RoutinePreviewFragment(clickedRoutine.getId(), clickedRoutine.getTitle()));
+        transaction.addToBackStack(null);
         transaction.commit();
         // Send info to other fragment/activity to show routine info
         // Launch fragment/activity

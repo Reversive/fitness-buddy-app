@@ -26,6 +26,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.DigestException;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -319,7 +321,7 @@ public class RoutineExecutionFragment extends Fragment {
         public void onClick(View view) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "fitness-buddy://" + routineId);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "hci://fitness-buddy.com/?" + routineId + "," + routineName);
             sendIntent.setType("text/plain");
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             startActivity(shareIntent);
