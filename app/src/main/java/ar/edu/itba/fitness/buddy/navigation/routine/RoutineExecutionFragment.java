@@ -321,7 +321,8 @@ public class RoutineExecutionFragment extends Fragment {
         public void onClick(View view) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "hci://fitness-buddy.com/?" + routineId + "," + routineName);
+            String tmpName = routineName.replaceAll(" ", "+");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "http://fitness-buddy.com/?" + routineId + "," + routineName);
             sendIntent.setType("text/plain");
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             startActivity(shareIntent);

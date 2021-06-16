@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:host="fitness-buddy.com"
-                    android:scheme="hci" />
+                    android:scheme="http" />
             </intent-filter>
         </activity>
         <activity android:name=".splash.SplashScreenActivity">
