@@ -178,6 +178,7 @@ public class RoutineExecutionFragment extends Fragment {
             finishDialog.dismiss();
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
             transaction.replace(R.id.frame_container, new CommunityRoutinesFragment());
+            transaction.addToBackStack(null);
             transaction.commit();
         }
     }
@@ -254,7 +255,6 @@ public class RoutineExecutionFragment extends Fragment {
         finishDialog = new Dialog(requireActivity());
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -293,6 +293,7 @@ public class RoutineExecutionFragment extends Fragment {
             timer.finish();
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
             transaction.replace(R.id.frame_container, new RoutineExecutionListFragment(routineId, routineName, currentCycle, currentExercise,  currentRound));
+            transaction.addToBackStack(null);
             transaction.commit();
         });
 

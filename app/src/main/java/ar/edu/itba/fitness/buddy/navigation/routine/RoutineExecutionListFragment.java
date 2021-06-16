@@ -34,7 +34,6 @@ public class RoutineExecutionListFragment extends Fragment {
     private final String routineName;
     private ArrayList<ExerciseItem> exerciseItems;
     private FullRoutine rout;
-
     private int currentCycle;
     private int currentExercise;
     private int currentRound;

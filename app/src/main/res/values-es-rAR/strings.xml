@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">fitness-buddy-app</string>
+    <string name="app_name">Fitness Buddy</string>
 
     <string name="splash_heading">¿Listo para\nestar en forma?</string>
     <string name="splash_tag_line">Te ayudamos a cumplir tus objetivos!</string>
@@ -40,7 +40,7 @@
     <string name="favorites">Favoritos</string>
 
     <string name="default_card_title">Titulo Rutina</string>
-    <string name="default_card_category">Categoria</string>
+    <string name="default_card_category">Categoría</string>
     <string name="default_card_difficulty">Dificultad</string>
     <string name="default_card_weight_field">Weight Loss</string>
     <string name="default_card_difficulty_field">Rookie</string>
@@ -87,4 +87,16 @@
     <string name="log_out_message">Quieres cerrar sesion?</string>
     <string name="cancel">Cancelar</string>
     <string name="log_out">Cerrar Sesion</string>
+
+    <string-array name="order_by_array">
+        <item>Titulo</item>
+        <item>Puntuacion</item>
+        <item>Dificultad</item>
+        <item>Categoría</item>
+    </string-array>
+
+    <string-array name="order_by_direction_array">
+        <item>ASC</item>
+        <item>DESC</item>
+    </string-array>
 </resources>

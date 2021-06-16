@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">fitness-buddy-app</string>
+    <string name="app_name">Fitness Buddy</string>
 
     <string name="splash_heading">Ready to\nget fit?</string>
     <string name="splash_tag_line">We will help you achieve your goals!</string>
