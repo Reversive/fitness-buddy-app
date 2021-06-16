@@ -81,6 +81,9 @@
     <string name="execution_list_item_name">-</string>
     <string name="execution_list_item_time">-</string>
     <string name="execution_list_item_reps">-</string>
+    <string name="log_out_message">Want to log out?</string>
+    <string name="cancel">Cancel</string>
+    <string name="log_out">Log Out</string>
 
     <string-array name="order_by_array">
         <item>Title</item>

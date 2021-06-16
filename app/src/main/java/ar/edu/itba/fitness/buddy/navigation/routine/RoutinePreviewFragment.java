@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -65,6 +66,12 @@ public class RoutinePreviewFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.name);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.name);
     }
 
@@ -130,7 +137,7 @@ public class RoutinePreviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routine_preview, container, false);
-
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         FloatingActionButton routineExecutor = view.findViewById(R.id.routine_executor);
         for (int i = 0; i < 3; i++) {
             switch (i) {
@@ -151,7 +158,8 @@ public class RoutinePreviewFragment extends Fragment {
 
         routineExecutor.setOnClickListener((l) -> {
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
-            transaction.replace(R.id.frame_container, new RoutineExecutionListFragment(this.id, this.name));
+            transaction.replace(R.id.frame_container, new RoutineExecutionFragment(this.id, this.name));
+            transaction.addToBackStack(null);
             transaction.commit();
         });
 

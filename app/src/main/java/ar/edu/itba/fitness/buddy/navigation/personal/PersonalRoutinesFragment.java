@@ -85,10 +85,18 @@ public class PersonalRoutinesFragment extends Fragment implements RoutineCardAda
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.personal_routines);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+    }
+
+    @Override
     public void onRoutineCardClick(int position) {
         RoutineCard clickedRoutine = routineCards.get(position);
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
         transaction.replace(R.id.frame_container, new RoutinePreviewFragment(clickedRoutine.getId(),clickedRoutine.getTitle()));
+        transaction.addToBackStack(null);
         transaction.commit();
         // Send info to other fragment/activity to show routine info
         // Launch fragment/activity

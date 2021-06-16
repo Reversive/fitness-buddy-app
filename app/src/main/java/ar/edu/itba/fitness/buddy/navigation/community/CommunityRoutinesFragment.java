@@ -67,6 +67,13 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.community_routines);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar, menu);
         MenuItem item = menu.findItem(R.id.action_search);
@@ -166,6 +173,7 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
         RoutineCard clickedRoutine = routineCards.get(position);
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
         transaction.replace(R.id.frame_container, new RoutinePreviewFragment(clickedRoutine.getId(),clickedRoutine.getTitle()));
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 

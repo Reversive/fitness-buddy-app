@@ -77,4 +77,14 @@
     <string name="done">Listo</string>
     <string name="congratulations">Felicitaciones!</string>
     <string name="please_rate_this_routine">Por favor puntua esta rutina</string>
+
+    <string name="routine_execution_exercise_name">Nombre</string>
+    <string name="routine_execution_exercise_time">Tiempo</string>
+    <string name="routine_execution_exercise_reps">Reps</string>
+    <string name="execution_list_item_name">-</string>
+    <string name="execution_list_item_time">-</string>
+    <string name="execution_list_item_reps">-</string>
+    <string name="log_out_message">Quieres cerrar sesion?</string>
+    <string name="cancel">Cancelar</string>
+    <string name="log_out">Cerrar Sesion</string>
 </resources>
