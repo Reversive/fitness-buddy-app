@@ -125,8 +125,8 @@ public class RoutinePreviewFragment extends Fragment {
         shareItem.setOnMenuItemClickListener(menuItem -> {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "hci://fitness-buddy.com/?" + id + "," + name);
+            String tmpName = name.replaceAll(" ", "+");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "http://fitness-buddy.com/?" + id + "," + tmpName);
             sendIntent.setType("text/plain");
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             startActivity(shareIntent);

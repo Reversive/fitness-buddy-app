@@ -62,7 +62,8 @@ public class MainNavigationActivity extends AppCompatActivity {
         if (uri != null) {
             String[] params = uri.getEncodedQuery().split(",");
             int routineId = Integer.parseInt(params[0]);
-            loadFragment(new RoutinePreviewFragment(routineId, params[1]));
+            String routineName = params[1].replaceAll("\\+", " ");
+            loadFragment(new RoutinePreviewFragment(routineId, routineName));
         } else {
             if (savedInstanceState == null) loadFragment(communityRoutinesFragment);
         }
