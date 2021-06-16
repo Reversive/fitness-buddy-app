@@ -1,13 +1,20 @@
 package ar.edu.itba.fitness.buddy.navigation.routine;
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,9 +30,12 @@ import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.adapter.ExerciseItemAdapter;
 import ar.edu.itba.fitness.buddy.api.model.Error;
 import ar.edu.itba.fitness.buddy.api.model.Exercise;
+import ar.edu.itba.fitness.buddy.api.model.Review;
 import ar.edu.itba.fitness.buddy.api.repository.Resource;
+import ar.edu.itba.fitness.buddy.api.repository.Status;
 import ar.edu.itba.fitness.buddy.model.ExerciseItem;
 import ar.edu.itba.fitness.buddy.model.FullRoutine;
+import ar.edu.itba.fitness.buddy.navigation.community.CommunityRoutinesFragment;
 
 public class RoutineExecutionListFragment extends Fragment {
     static int EXERCISES_SHOWN = 3;
@@ -40,6 +50,7 @@ public class RoutineExecutionListFragment extends Fragment {
 
     RecyclerView exerciseRecycler;
     private View doneLayout;
+    private Dialog finishDialog;
 
     public RoutineExecutionListFragment(int id, String name) {
         this(id, name, 0, 0, 0);
@@ -129,6 +140,7 @@ public class RoutineExecutionListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.routineName);
+        finishDialog = new Dialog(requireActivity());
     }
 
 
@@ -146,7 +158,17 @@ public class RoutineExecutionListFragment extends Fragment {
         FloatingActionButton detailBtn = view.findViewById(R.id.exerciseDetailBtn);
 
         doneBtn.setOnClickListener(l -> {
-            // done
+            finishDialog.setContentView(R.layout.routine_finish_dialog);
+            finishDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            finishDialog.show();
+            Button finishButton = finishDialog.findViewById(R.id.finishRoutineButton);
+            RatingBar ratingBar = finishDialog.findViewById(R.id.routineFinishRatingBar);
+            AppCompatImageButton shareButton = finishDialog.findViewById(R.id.dialog_share);
+            AppCompatImageButton favoriteButton = finishDialog.findViewById(R.id.dialog_add_to_fav);
+            shareButton.setOnClickListener(new RoutineExecutionListFragment.ShareButtonLister());
+            favoriteButton.setOnClickListener(new RoutineExecutionListFragment.FavoriteButtonListener());
+            finishButton.setOnClickListener(new RoutineExecutionListFragment.FinishButtonListener());
+            ratingBar.setOnRatingBarChangeListener(new RoutineExecutionListFragment.RoutineBarListener());
         });
 
         detailBtn.setOnClickListener(l -> {
@@ -167,5 +189,53 @@ public class RoutineExecutionListFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    private class FinishButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            finishDialog.dismiss();
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
+            transaction.replace(R.id.frame_container, new CommunityRoutinesFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+    private class RoutineBarListener implements RatingBar.OnRatingBarChangeListener {
+
+        @Override
+        public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+            Review review = new Review(0, 0, (int)v, "", null);
+            App app = (App)requireActivity().getApplication();
+            app.getReviewRepository().addRoutineReview(routineId, review).observe(getViewLifecycleOwner(), r -> {
+                if(r.getStatus() == Status.ERROR) defaultResourceHandler(r);
+            });
+        }
+    }
+
+    private class ShareButtonLister implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            String tmpName = routineName.replaceAll(" ", "+");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "http://fitness-buddy.com/?" + routineId + "," + routineName);
+            sendIntent.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+        }
+    }
+
+    private class FavoriteButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            AppCompatImageButton favButton = (AppCompatImageButton)view;
+            favButton.setBackgroundResource(R.drawable.ic_favorite);
+            App app = (App)requireActivity().getApplication();
+            app.getFavoriteRepository().setFavorite(routineId).observe(getViewLifecycleOwner(), f -> {
+                Toast.makeText(app, "Added to favorites", Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 }
