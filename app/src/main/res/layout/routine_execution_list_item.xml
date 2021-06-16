@@ -2,16 +2,19 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="2dp"
+    app:cardCornerRadius="20dp"
     app:cardElevation="8dp"
-    android:layout_margin="10dp"
-    android:backgroundTint="@color/purple_web"
-    android:padding="20dp">
+    android:backgroundTint="@color/white">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
 
 
         <TextView
@@ -19,27 +22,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4"
+            android:text="@string/execution_list_item_name"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:text="@string/execution_list_item_name" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/purple_web" />
 
         <TextView
             android:id="@+id/duration_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:text="@string/execution_list_item_time"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:text="@string/execution_list_item_time" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/purple_web" />
 
         <TextView
             android:id="@+id/repetitions_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:text="@string/execution_list_item_reps"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:text="@string/execution_list_item_reps" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/purple_web" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

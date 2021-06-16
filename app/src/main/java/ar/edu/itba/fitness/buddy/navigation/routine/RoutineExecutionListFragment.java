@@ -1,8 +1,6 @@
 package ar.edu.itba.fitness.buddy.navigation.routine;
 
-import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,18 +21,11 @@ import java.util.Objects;
 import ar.edu.itba.fitness.buddy.App;
 import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.adapter.ExerciseItemAdapter;
-import ar.edu.itba.fitness.buddy.adapter.RoutineCardAdapter;
-import ar.edu.itba.fitness.buddy.api.model.Cycle;
 import ar.edu.itba.fitness.buddy.api.model.Error;
 import ar.edu.itba.fitness.buddy.api.model.Exercise;
-import ar.edu.itba.fitness.buddy.api.model.PagedList;
-import ar.edu.itba.fitness.buddy.api.model.Routine;
 import ar.edu.itba.fitness.buddy.api.repository.Resource;
-import ar.edu.itba.fitness.buddy.api.repository.Status;
 import ar.edu.itba.fitness.buddy.model.ExerciseItem;
-import ar.edu.itba.fitness.buddy.model.FullCycle;
 import ar.edu.itba.fitness.buddy.model.FullRoutine;
-import ar.edu.itba.fitness.buddy.model.RoutineCard;
 
 public class RoutineExecutionListFragment extends Fragment {
     static int EXERCISES_SHOWN = 3;
@@ -44,18 +34,24 @@ public class RoutineExecutionListFragment extends Fragment {
     private final String routineName;
     private ArrayList<ExerciseItem> exerciseItems;
     private FullRoutine rout;
-    private ExerciseItemAdapter adapter;
 
     private int currentCycle;
     private int currentExercise;
+    private int currentRound;
 
     RecyclerView exerciseRecycler;
+    private View doneLayout;
 
     public RoutineExecutionListFragment(int id, String name) {
-        this.routineId = id;
-        this.routineName = name;
-        this.currentCycle = 0;
-        this.currentExercise = 0;
+        this(id, name, 0, 0, 0);
+    }
+
+    public RoutineExecutionListFragment(int routineId, String routineName, int currentCycle, int currentExercise, int currentRound) {
+        this.routineId = routineId;
+        this.routineName = routineName;
+        this.currentCycle = currentCycle;
+        this.currentExercise = currentExercise;
+        this.currentRound = currentRound;
     }
 
     private void fillExercises() {
@@ -63,29 +59,32 @@ public class RoutineExecutionListFragment extends Fragment {
         int added = 0;
         boolean done = false;
         boolean first = true;
-        int i, j;
+        int i, j, k;
         for (i = currentCycle; i < rout.getCycles() && !done; i++) {
-            ArrayList<Exercise> e = rout.getCycle(i).getExercises();
-            for (j = 0; j < e.size() && !done; j++) {
-                if (first) {
-                    j = currentExercise;
-                    first = false;
+            ArrayList<Exercise> exerciseList = rout.getCycle(i).getExercises();
+            for (k = 0; k < rout.getCycle(i).getRepetitions(); k++) {
+                for (j = 0; j < exerciseList.size() && !done; j++) {
+                    if (first) {
+                        k = currentRound;
+                        j = currentExercise;
+                        first = false;
+                    }
+                    Exercise exercise = exerciseList.get(j);
+                    exerciseItems.add(
+                            new ExerciseItem(
+                                    exercise.getExercise().getName(),
+                                    exercise.getDuration(),
+                                    exercise.getRepetitions()
+                            )
+                    );
+                    added++;
+                    if (added == EXERCISES_SHOWN)
+                        done = true;
                 }
-                Exercise exercise = e.get(j);
-                exerciseItems.add(
-                        new ExerciseItem(
-                                exercise.getExercise().getName(),
-                                exercise.getDuration(),
-                                exercise.getRepetitions()
-                        )
-                );
-                added++;
-                if (added == EXERCISES_SHOWN)
-                    done = true;
             }
         }
 
-        adapter = new ExerciseItemAdapter(exerciseItems, this::navToExercise);
+        ExerciseItemAdapter adapter = new ExerciseItemAdapter(exerciseItems, this::navToExercise);
         exerciseRecycler.setAdapter(adapter);
     }
 
@@ -94,9 +93,21 @@ public class RoutineExecutionListFragment extends Fragment {
             return;
 
         currentExercise += position;
-        while (currentExercise >= rout.getCycle(currentCycle).getExercises().size()) {
-            currentExercise -= rout.getCycle(currentCycle).getExercises().size();
-            currentCycle++;
+        int rounds = rout.getCycle(currentCycle).getRepetitions();
+        int size = rout.getCycle(currentCycle).getExercises().size();
+        while (currentExercise >= size) {
+            currentExercise -= size;
+            currentRound++;
+            if (currentRound >= rounds) {
+                currentCycle++;
+                size = rout.getCycle(currentCycle).getExercises().size();
+                rounds = rout.getCycle(currentCycle).getRepetitions();
+                currentRound = 0;
+            }
+        }
+
+        if (currentCycle == rout.getCycles() - 1 && currentRound == rounds - 1 && currentExercise == size - 1) {
+            doneLayout.setVisibility(View.VISIBLE);
         }
         fillExercises();
     }
@@ -131,17 +142,17 @@ public class RoutineExecutionListFragment extends Fragment {
         exerciseRecycler.setHasFixedSize(true);
         exerciseRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+        doneLayout = view.findViewById(R.id.finishRoutineLayout);
         FloatingActionButton doneBtn = view.findViewById(R.id.finishRoutineButton);
         FloatingActionButton detailBtn = view.findViewById(R.id.exerciseDetailBtn);
 
         doneBtn.setOnClickListener(l -> {
-
+            // done
         });
 
         detailBtn.setOnClickListener(l -> {
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
-            FullCycle cycle = rout.getCycle(currentCycle);
-            transaction.replace(R.id.frame_container, new RoutineExecutionFragment(routineId, routineName, currentExercise, cycle.getId(), cycle.getRepetitions()));
+            transaction.replace(R.id.frame_container, new RoutineExecutionFragment(routineId, routineName, currentCycle, currentExercise,  currentRound));
             transaction.commit();
         });
 

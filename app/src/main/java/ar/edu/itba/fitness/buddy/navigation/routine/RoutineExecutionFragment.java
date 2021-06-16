@@ -45,6 +45,7 @@ import ar.edu.itba.fitness.buddy.api.repository.Resource;
 import ar.edu.itba.fitness.buddy.api.repository.Status;
 import ar.edu.itba.fitness.buddy.api.service.ApiExerciseService;
 import ar.edu.itba.fitness.buddy.listener.YouTubeListener;
+import ar.edu.itba.fitness.buddy.model.FullRoutine;
 import ar.edu.itba.fitness.buddy.model.PausableTimer;
 import ar.edu.itba.fitness.buddy.model.RoutineCard;
 import ar.edu.itba.fitness.buddy.navigation.MainNavigationActivity;
@@ -61,6 +62,8 @@ public class RoutineExecutionFragment extends Fragment {
     private FloatingActionButton prevBtn;
     private FloatingActionButton nextBtn;
 
+    private FullRoutine fullRoutine;
+
     private boolean isPlaying = true;
 
     private YouTubeListener videoPlayer;
@@ -69,11 +72,9 @@ public class RoutineExecutionFragment extends Fragment {
     private final int routineId;
     private final String routineName;
     private int currentCycle;
-    private int cycleRounds;
+    private int currentRound;
     private int currentExercise;
 
-    private ArrayList<Cycle> cycles;
-    private ArrayList<Exercise> exercises;
     private boolean noTimer;
     private boolean isFavorite = false;
 
@@ -83,52 +84,12 @@ public class RoutineExecutionFragment extends Fragment {
         this(routineId, routineName, 0, 0, 0);
     }
 
-    public RoutineExecutionFragment(int routineId, String routineName, int currentCycle, int currentExercise, int cycleRounds) {
+    public RoutineExecutionFragment(int routineId, String routineName, int currentCycle, int currentExercise, int currentRound) {
         this.routineId = routineId;
         this.routineName = routineName;
         this.currentCycle = currentCycle;
         this.currentExercise = currentExercise;
-        this.cycleRounds = cycleRounds;
-    }
-
-    private void getCycles() {
-        App app = (App) requireActivity().getApplication();
-        app.getRoutineRepository().getRoutineCycles(routineId, 0, 10, null, null).observe(getViewLifecycleOwner(), t -> {
-            if(t.getStatus() == Status.SUCCESS) {
-                PagedList<Cycle> cyclePage = t.getData();
-                if(cyclePage != null) {
-                    cycles = (ArrayList<Cycle>) cyclePage.getContent();
-                    getCycleExercises();
-                }
-            } else {
-                defaultResourceHandler(t);
-            }
-        });
-    }
-
-    private void getCycleExercises() {
-        App app = (App) requireActivity().getApplication();
-        app.getCycleRepository().getCycleExercises(cycles.get(currentCycle).getId(), 0, 10, null, null).observe(getViewLifecycleOwner(), t -> {
-            if(t.getStatus() == Status.SUCCESS) {
-                PagedList<Exercise> exercisePage = t.getData();
-                if(exercisePage != null) {
-                    exercises = (ArrayList<Exercise>) exercisePage.getContent();
-                    if (currentExercise != -1)
-                        currentExercise = 0;
-                    else
-                        currentExercise = exercises.size() - 1;
-
-                    if (cycleRounds != -1)
-                        cycleRounds = 0;
-                    else
-                        cycleRounds = cycles.get(currentCycle).getRepetitions() - 1;
-
-                    loadExercise();
-                }
-            } else {
-                defaultResourceHandler(t);
-            }
-        });
+        this.currentRound = currentRound;
     }
 
     public void timerCallback() {
@@ -139,25 +100,28 @@ public class RoutineExecutionFragment extends Fragment {
 
     public void loadExercise() {
         videoPlayer.pauseVideo();
-        if (currentExercise == 0 && currentCycle == 0 && cycleRounds == 0) {
+
+        if (currentExercise == 0 && currentCycle == 0 && currentRound == 0){
             prevBtn.hide();
         } else {
-            if (currentCycle == cycles.size() - 1 && currentExercise == exercises.size() - 1 && cycleRounds == cycles.get(currentCycle).getRepetitions() - 1) {
-                nextBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_done_24));
-            }
             prevBtn.show();
         }
+
         if (currentExercise < 0) {
-            currentCycle--;
-            cycleRounds = -1;
-            currentExercise = -1;
-            getCycleExercises();
-            return;
-        } else if (currentExercise >= exercises.size()) {
-            if (cycleRounds == cycles.get(currentCycle).getRepetitions() - 1) {
-                cycleRounds = 0;
+            if (currentRound == 0) {
+                currentCycle--;
+                currentRound = fullRoutine.getCycle(currentCycle).getRepetitions() - 1;
+            } else {
+                currentRound--;
+            }
+            currentExercise = fullRoutine.getCycle(currentCycle).getExercises().size() - 1;
+        } else if (currentExercise >= fullRoutine.getCycle(currentCycle).getExercises().size()) {
+            currentRound++;
+            currentExercise = 0;
+            if (currentRound >= fullRoutine.getCycle(currentCycle).getRepetitions()) {
                 currentCycle++;
-                if (currentCycle == cycles.size()) {
+                currentRound = 0;
+                if (currentCycle == fullRoutine.getCycles()) {
                     finishDialog.setContentView(R.layout.routine_finish_dialog);
                     finishDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     finishDialog.show();
@@ -171,19 +135,17 @@ public class RoutineExecutionFragment extends Fragment {
                     ratingBar.setOnRatingBarChangeListener(new RoutineBarListener());
                     return;
                 }
-                getCycleExercises();
-            } else {
-                cycleRounds++;
-                currentExercise = 0;
-                loadExercise();
             }
-            return;
         }
 
-        loadExerciseVideo();
+        if (currentCycle == fullRoutine.getCycles() - 1 && currentExercise == fullRoutine.getCycle(currentCycle).getExercises().size() - 1 && currentRound == fullRoutine.getCycle(currentCycle).getRepetitions() - 1) {
+            nextBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_done_24));
+        }
 
-        Exercise exercise = exercises.get(currentExercise);
-        Log.d("EXERCISE", "got");
+        Exercise exercise = fullRoutine.getCycle(currentCycle).getExercises().get(currentExercise);
+
+        loadExerciseVideo(exercise.getExercise().getId());
+
         titleView.setText(exercise.getExercise().getName());
         descView.setText(exercise.getExercise().getDetail());
 
@@ -231,9 +193,9 @@ public class RoutineExecutionFragment extends Fragment {
     }
 
 
-    private void loadExerciseVideo() {
+    private void loadExerciseVideo(int id) {
         App app = (App) requireActivity().getApplication();
-        app.getExerciseRepository().getExerciseVideos(exercises.get(currentExercise).getExercise().getId(), null,0, 1, null, null).observe(getViewLifecycleOwner(), t -> {
+        app.getExerciseRepository().getExerciseVideos(id, null,0, 1, null, null).observe(getViewLifecycleOwner(), t -> {
             if(t.getStatus() == Status.SUCCESS) {
                 Log.d("VIDEO", "success");
                 PagedList<Media> exercisePage = t.getData();
@@ -243,9 +205,9 @@ public class RoutineExecutionFragment extends Fragment {
                         videoPlayer.playVideo("");
                         return;
                     }
-                    String id = (exercisePage.getContent()).get(0).getUrl().split("\\?v=")[1].split("&")[0];
-                    Log.d("VIDEO", id);
-                    videoPlayer.playVideo(id);
+                    String videoId = (exercisePage.getContent()).get(0).getUrl().split("\\?v=")[1].split("&")[0];
+                    Log.d("VIDEO", videoId);
+                    videoPlayer.playVideo(videoId);
                 }
             } else {
                 defaultResourceHandler(t);
@@ -308,6 +270,8 @@ public class RoutineExecutionFragment extends Fragment {
         nextBtn = view.findViewById(R.id.nextExerciseBtn);
         toggleBtn = view.findViewById(R.id.toggleExerciseBtn);
 
+        FloatingActionButton listViewBtn = view.findViewById(R.id.listExecutionBtn);
+
         prevBtn.setOnClickListener(v -> {
             currentExercise--;
             timer.finish();
@@ -323,12 +287,22 @@ public class RoutineExecutionFragment extends Fragment {
 
         toggleBtn.setOnClickListener(this::onClickToggle);
 
+        listViewBtn.setOnClickListener(v -> {
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
+            transaction.replace(R.id.frame_container, new RoutineExecutionListFragment(routineId, routineName, currentCycle, currentExercise,  currentRound));
+            transaction.commit();
+        });
+
         videoPlayer = new YouTubeListener();
         videoView.initialize(videoPlayer);
 
         getLifecycle().addObserver(videoView);
 
-        getCycles();
+        //getCycles();
+
+        fullRoutine = new FullRoutine(routineId);
+        App app = (App) requireActivity().getApplication();
+        fullRoutine.fillData(app, getViewLifecycleOwner(), this::loadExercise, this::defaultResourceHandler);
 
         return view;
     }

@@ -132,74 +132,99 @@
 
         </LinearLayout>
 
-        <Space
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="30dp">
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/prevExerciseBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/white"
-                    android:clickable="true"
-                    android:contentDescription="@string/default_fab_back_desc"
-                    android:tint="@color/purple_web"
-                    android:visibility="invisible"
-                    app:borderWidth="0dp"
-                    app:srcCompat="@drawable/ic_skip_previous" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/listExecutionBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:contentDescription="@string/default_fab_back_desc"
+                        android:tint="@color/purple_web"
+                        android:visibility="visible"
+                        app:borderWidth="0dp"
+                        app:srcCompat="@drawable/ic_baseline_list_24" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/prevExerciseBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:contentDescription="@string/default_fab_back_desc"
+                        android:tint="@color/purple_web"
+                        android:visibility="invisible"
+                        app:borderWidth="0dp"
+                        app:srcCompat="@drawable/ic_skip_previous" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/toggleExerciseBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:contentDescription="@string/default_fab_pause_desc"
+                        android:tint="@color/purple_web"
+                        app:borderWidth="0dp"
+                        app:srcCompat="@drawable/ic_pause" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/nextExerciseBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:contentDescription="@string/default_fab_next_desc"
+                        android:tint="@color/purple_web"
+                        app:borderWidth="0dp"
+                        app:srcCompat="@drawable/ic_skip_next" />
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/toggleExerciseBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/white"
-                    android:clickable="true"
-                    android:contentDescription="@string/default_fab_pause_desc"
-                    android:tint="@color/purple_web"
-                    app:borderWidth="0dp"
-                    app:srcCompat="@drawable/ic_pause" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/nextExerciseBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/white"
-                    android:clickable="true"
-                    android:contentDescription="@string/default_fab_next_desc"
-                    android:tint="@color/purple_web"
-                    app:borderWidth="0dp"
-                    app:srcCompat="@drawable/ic_skip_next" />
-            </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
