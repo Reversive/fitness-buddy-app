@@ -37,6 +37,7 @@ import ar.edu.itba.fitness.buddy.api.repository.Status;
 import ar.edu.itba.fitness.buddy.model.ExerciseItem;
 import ar.edu.itba.fitness.buddy.model.FullRoutine;
 import ar.edu.itba.fitness.buddy.navigation.community.CommunityRoutinesFragment;
+import ar.edu.itba.fitness.buddy.splash.login.LoginActivity;
 
 public class RoutineExecutionListFragment extends Fragment {
     static int EXERCISES_SHOWN = 3;
@@ -144,6 +145,11 @@ public class RoutineExecutionListFragment extends Fragment {
         setHasOptionsMenu(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.routineName);
         finishDialog = new Dialog(requireActivity());
+        App app = (App)requireActivity().getApplication();
+        if(app.getPreferences().getAuthToken() == null) {
+            Intent i = new Intent(requireContext(), LoginActivity.class);
+            startActivity(i);
+        }
     }
 
 

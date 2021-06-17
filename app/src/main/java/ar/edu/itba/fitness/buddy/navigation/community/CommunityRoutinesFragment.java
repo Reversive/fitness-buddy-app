@@ -1,6 +1,7 @@
 package ar.edu.itba.fitness.buddy.navigation.community;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ import ar.edu.itba.fitness.buddy.comparator.RoutineTitleComparator;
 import ar.edu.itba.fitness.buddy.model.RoutineCard;
 import ar.edu.itba.fitness.buddy.navigation.routine.RoutinePreviewFragment;
 import ar.edu.itba.fitness.buddy.api.model.Error;
+import ar.edu.itba.fitness.buddy.splash.login.LoginActivity;
 
 public class CommunityRoutinesFragment extends Fragment implements RoutineCardAdapter.OnRoutineCardListener{
     ArrayList<RoutineCard> routineCards;
@@ -64,6 +66,11 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.community_routines);
+        App app = (App)requireActivity().getApplication();
+        if(app.getPreferences().getAuthToken() == null) {
+            Intent i = new Intent(requireContext(), LoginActivity.class);
+            startActivity(i);
+        }
     }
 
     @Override
@@ -71,6 +78,11 @@ public class CommunityRoutinesFragment extends Fragment implements RoutineCardAd
         super.onResume();
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.community_routines);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        App app = (App)requireActivity().getApplication();
+        if(app.getPreferences().getAuthToken() == null) {
+            Intent i = new Intent(requireContext(), LoginActivity.class);
+            startActivity(i);
+        }
     }
 
     @Override

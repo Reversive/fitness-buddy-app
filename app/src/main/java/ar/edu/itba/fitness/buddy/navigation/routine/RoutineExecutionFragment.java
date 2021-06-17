@@ -39,6 +39,7 @@ import ar.edu.itba.fitness.buddy.listener.YouTubeListener;
 import ar.edu.itba.fitness.buddy.model.FullRoutine;
 import ar.edu.itba.fitness.buddy.model.PausableTimer;
 import ar.edu.itba.fitness.buddy.navigation.community.CommunityRoutinesFragment;
+import ar.edu.itba.fitness.buddy.splash.login.LoginActivity;
 
 public class RoutineExecutionFragment extends Fragment {
 
@@ -246,6 +247,11 @@ public class RoutineExecutionFragment extends Fragment {
         setHasOptionsMenu(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.routineName);
         finishDialog = new Dialog(requireActivity());
+        App app = (App)requireActivity().getApplication();
+        if(app.getPreferences().getAuthToken() == null) {
+            Intent i = new Intent(requireContext(), LoginActivity.class);
+            startActivity(i);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ar.edu.itba.fitness.buddy.navigation.personal;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ import ar.edu.itba.fitness.buddy.api.repository.Resource;
 import ar.edu.itba.fitness.buddy.api.repository.Status;
 import ar.edu.itba.fitness.buddy.model.RoutineCard;
 import ar.edu.itba.fitness.buddy.navigation.routine.RoutinePreviewFragment;
+import ar.edu.itba.fitness.buddy.splash.login.LoginActivity;
 
 
 public class PersonalRoutinesFragment extends Fragment implements RoutineCardAdapter.OnRoutineCardListener{
@@ -41,6 +43,11 @@ public class PersonalRoutinesFragment extends Fragment implements RoutineCardAda
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.personal_routines);
+        App app = (App)requireActivity().getApplication();
+        if(app.getPreferences().getAuthToken() == null) {
+            Intent i = new Intent(requireContext(), LoginActivity.class);
+            startActivity(i);
+        }
     }
 
     @Override
@@ -89,6 +96,11 @@ public class PersonalRoutinesFragment extends Fragment implements RoutineCardAda
         super.onResume();
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.personal_routines);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        App app = (App)requireActivity().getApplication();
+        if(app.getPreferences().getAuthToken() == null) {
+            Intent i = new Intent(requireContext(), LoginActivity.class);
+            startActivity(i);
+        }
     }
 
     @Override

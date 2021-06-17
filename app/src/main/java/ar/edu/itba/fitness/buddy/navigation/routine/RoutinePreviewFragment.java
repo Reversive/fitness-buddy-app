@@ -38,6 +38,7 @@ import ar.edu.itba.fitness.buddy.api.repository.Resource;
 import ar.edu.itba.fitness.buddy.api.repository.Status;
 import ar.edu.itba.fitness.buddy.model.CycleCard;
 import ar.edu.itba.fitness.buddy.model.FullRoutine;
+import ar.edu.itba.fitness.buddy.splash.login.LoginActivity;
 
 
 public class RoutinePreviewFragment extends Fragment {
@@ -65,12 +66,22 @@ public class RoutinePreviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.name);
+        App app = (App)requireActivity().getApplication();
+        if(app.getPreferences().getAuthToken() == null) {
+            Intent i = new Intent(requireContext(), LoginActivity.class);
+            startActivity(i);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(this.name);
+        App app = (App)requireActivity().getApplication();
+        if(app.getPreferences().getAuthToken() == null) {
+            Intent i = new Intent(requireContext(), LoginActivity.class);
+            startActivity(i);
+        }
     }
 
     @Override

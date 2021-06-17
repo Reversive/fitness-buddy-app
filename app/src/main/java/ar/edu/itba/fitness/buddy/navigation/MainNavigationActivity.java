@@ -51,6 +51,11 @@ public class MainNavigationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App app = (App)getApplication();
+        if(app.getPreferences().getAuthToken() == null) {
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivity(i);
+        }
         setContentView(R.layout.activity_main_navigation);
         ActionBar actionBar = getSupportActionBar();
         ColorDrawable colorDrawable
