@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/verification_background"
     tools:context=".splash.register.RegisterVerificationActivity">
 
     <LinearLayout
@@ -31,7 +31,7 @@
             android:text="@string/verification_code_text"
             android:textAlignment="center"
             android:textAllCaps="true"
-            android:textColor="@color/purple_web"
+            android:textColor="@color/verification_text"
             android:textSize="100sp" />
 
         <TextView
@@ -43,7 +43,7 @@
             android:text="@string/verification_text"
             android:textAlignment="center"
             android:textAllCaps="true"
-            android:textColor="@color/purple_web"
+            android:textColor="@color/verification_text"
             android:textSize="24sp" />
 
         <TextView
@@ -55,7 +55,7 @@
             android:includeFontPadding="false"
             android:text="@string/verification_description_text"
             android:textAlignment="center"
-            android:textColor="@color/purple_web"
+            android:textColor="@color/verification_text"
             android:textSize="16sp" />
 
         <com.chaos.view.PinView
@@ -68,18 +68,18 @@
             android:cursorVisible="true"
             android:inputType="text"
             android:itemBackground="@color/light_white"
-            android:textColor="@color/purple_web"
-            app:cursorColor="@color/purple_web"
+            android:textColor="@color/main_text_color"
+            app:cursorColor="@color/main_text_color"
             app:itemCount="6"
             app:itemHeight="50dp"
             app:itemRadius="5dp"
             app:itemWidth="50dp"
-            app:lineColor="@color/purple_web" />
+            app:lineColor="@color/verification_text" />
 
         <Button
             style="@style/splashScreenButton"
             android:onClick="callVerifyCode"
-            android:backgroundTint="@color/purple_web"
+            android:backgroundTint="@color/main_text_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
