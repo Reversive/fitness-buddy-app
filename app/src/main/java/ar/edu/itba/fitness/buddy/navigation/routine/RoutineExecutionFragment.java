@@ -35,6 +35,7 @@ import ar.edu.itba.fitness.buddy.api.model.PagedList;
 import ar.edu.itba.fitness.buddy.api.model.Review;
 import ar.edu.itba.fitness.buddy.api.repository.Resource;
 import ar.edu.itba.fitness.buddy.api.repository.Status;
+import ar.edu.itba.fitness.buddy.listener.OnSwipeTouchListener;
 import ar.edu.itba.fitness.buddy.listener.YouTubeListener;
 import ar.edu.itba.fitness.buddy.model.FullRoutine;
 import ar.edu.itba.fitness.buddy.model.PausableTimer;
@@ -69,6 +70,7 @@ public class RoutineExecutionFragment extends Fragment {
     private boolean noTimer;
 
     Dialog finishDialog;
+    private boolean isLastExercise = false;
 
     public RoutineExecutionFragment(int routineId, String routineName, boolean isFavourite) {
         this(routineId, routineName, isFavourite, 0, 0, 0);
@@ -91,12 +93,6 @@ public class RoutineExecutionFragment extends Fragment {
 
     public void loadExercise() {
         videoPlayer.pauseVideo();
-
-        if (currentExercise == 0 && currentCycle == 0 && currentRound == 0){
-            prevBtn.hide();
-        } else {
-            prevBtn.show();
-        }
 
         if (currentExercise < 0) {
             if (currentRound == 0) {
@@ -134,7 +130,15 @@ public class RoutineExecutionFragment extends Fragment {
             }
         }
 
+        Log.d("ROUND", String.valueOf(currentRound));
+        if (currentExercise == 0 && currentCycle == 0 && currentRound == 0){
+            prevBtn.hide();
+        } else {
+            prevBtn.show();
+        }
+
         if (currentCycle == fullRoutine.getCycles() - 1 && currentExercise == fullRoutine.getCycle(currentCycle).getExercises().size() - 1 && currentRound == fullRoutine.getCycle(currentCycle).getRepetitions() - 1) {
+            isLastExercise = true;
             nextBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_done_24));
         }
 
@@ -251,6 +255,7 @@ public class RoutineExecutionFragment extends Fragment {
         prevBtn.setOnClickListener(v -> {
             currentExercise--;
             timer.finish();
+            isLastExercise = false;
             nextBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_media_next));
             loadExercise();
         });
@@ -259,6 +264,28 @@ public class RoutineExecutionFragment extends Fragment {
             currentExercise++;
             timer.finish();
             loadExercise();
+        });
+
+        view.setOnTouchListener(new OnSwipeTouchListener(requireContext()) {
+            public void onSwipeLeft() {
+                if (isLastExercise)
+                    return;
+
+                currentExercise++;
+                timer.finish();
+                loadExercise();
+            }
+
+            public void onSwipeRight() {
+                if (currentCycle == 0 && currentRound == 0 && currentExercise == 0)
+                    return;
+
+                isLastExercise = false;
+                currentExercise--;
+                timer.finish();
+                nextBtn.setImageDrawable(ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_media_next));
+                loadExercise();
+            }
         });
 
         toggleBtn.setOnClickListener(this::onClickToggle);
