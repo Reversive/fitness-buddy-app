@@ -87,7 +87,7 @@
                 android:fontFamily="@font/muli_black"
                 android:text="@string/repetitions_number"
                 android:textColor="@color/light_white"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 tools:ignore="SmallSp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -99,7 +99,7 @@
                 android:fontFamily="@font/muli_black"
                 android:text="@string/duration_number"
                 android:textColor="@color/light_white"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 tools:ignore="SmallSp" />
         </LinearLayout>
 
