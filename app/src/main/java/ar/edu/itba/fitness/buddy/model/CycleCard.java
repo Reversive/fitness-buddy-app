@@ -19,6 +19,7 @@ public class CycleCard {
     public CycleCard(FullCycle cycle) {
 
         this.cycle=cycle;
+        setExerciseCards();
     }
 
     public ArrayList<Exercise> getExercises() {
@@ -29,8 +30,8 @@ public class CycleCard {
             exerciseCards.add(new ExerciseCard(exercise));
         }
     }
+
     public ArrayList<ExerciseCard> getExerciseCards(){
-        setExerciseCards();
         return exerciseCards;
     }
     public FullCycle getCycle(){
