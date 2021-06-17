@@ -2,6 +2,13 @@ package ar.edu.itba.fitness.buddy.navigation.routine;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,14 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -31,6 +30,8 @@ import ar.edu.itba.fitness.buddy.App;
 import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.adapter.CycleCardAdapter;
 import ar.edu.itba.fitness.buddy.api.model.Error;
+import ar.edu.itba.fitness.buddy.api.model.Exercise;
+import ar.edu.itba.fitness.buddy.api.model.Media;
 import ar.edu.itba.fitness.buddy.api.model.PagedList;
 import ar.edu.itba.fitness.buddy.api.model.Routine;
 import ar.edu.itba.fitness.buddy.api.repository.Resource;
@@ -131,11 +132,48 @@ public class RoutinePreviewFragment extends Fragment {
         });
     }
 
+    private void gotData() {
+        ArrayList<ArrayList<Media>> imageList = new ArrayList<>();
+        getImagesRec(imageList, 0, 0, () -> filterCycles(imageList));
+    }
+
+    private void getImagesRec(ArrayList<ArrayList<Media>> imageList, int cycleIdx, int exerciseIdx, Runnable callback) {
+        if (exerciseIdx == routine.getCycle(cycleIdx).getExercises().size()) {
+            cycleIdx = cycleIdx + 1;
+            exerciseIdx = 0;
+        }
+
+        if (cycleIdx == routine.getCycles()) {
+            callback.run();
+            return;
+        }
+
+        if (exerciseIdx == 0)
+            imageList.add(new ArrayList<>());
+
+        Exercise exercise = routine.getCycle(cycleIdx).getExercises().get(exerciseIdx);
+        App app = (App) requireActivity().getApplication();
+        int finalCycleIdx = cycleIdx;
+        int finalExerciseIdx = exerciseIdx;
+        app.getExerciseRepository().getExerciseImages(exercise.getExercise().getId(), null, 0, 1, null, null).observe(getViewLifecycleOwner(), (r) -> {
+            if (r.getStatus() == Status.SUCCESS) {
+                PagedList<Media> list = r.getData();
+                if (list != null) {
+                    Media media = list.getContent().get(0);
+                    imageList.get(finalCycleIdx).add(media);
+                    getImagesRec(imageList, finalCycleIdx, finalExerciseIdx + 1, callback);
+                }
+            } else {
+                defaultResourceHandler(r);
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         App app = (App)requireActivity().getApplication();
-        routine.fillData(app,getViewLifecycleOwner(),this::filterCycles,this::defaultResourceHandler);
+        routine.fillData(app,getViewLifecycleOwner(),this::gotData,this::defaultResourceHandler);
         view = inflater.inflate(R.layout.fragment_routine_preview, container, false);
         FloatingActionButton routineExecutor = view.findViewById(R.id.routine_executor);
 
@@ -159,14 +197,16 @@ public class RoutinePreviewFragment extends Fragment {
                 break;
         }
     }
-    private void filterCycles(){
-        for(int i=0;i< routine.getCycles();i++){
+
+    private void filterCycles(ArrayList<ArrayList<Media>> imageList) {
+        for(int i=0;i < routine.getCycles(); i++){
+            ArrayList<Media> images = imageList.get(i);
             if(routine.getCycle(i).getType().compareTo("warmup")==0)
-                warmupCycles.add(new CycleCard(routine.getCycle(i)));
+                warmupCycles.add(new CycleCard(routine.getCycle(i), images));
             else if(routine.getCycle(i).getType().compareTo("cooldown")==0)
-                cooldownCycles.add(new CycleCard(routine.getCycle(i)));
+                cooldownCycles.add(new CycleCard(routine.getCycle(i), images));
             else
-                workoutCycles.add(new CycleCard(routine.getCycle(i)));
+                workoutCycles.add(new CycleCard(routine.getCycle(i), images));
         }
 
         for(int i=0;i<3;i++){
@@ -178,8 +218,10 @@ public class RoutinePreviewFragment extends Fragment {
                 case 2:cycleRecycler = view.findViewById(R.id.cooldown_cycle_recycler);
                     break;
             }
+
             cycleRecycler.setHasFixedSize(true);
             cycleRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
             switch (i) {
                 case 0:
                     adapter = new CycleCardAdapter(warmupCycles);

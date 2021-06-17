@@ -1,33 +1,29 @@
 package ar.edu.itba.fitness.buddy.model;
 
-import androidx.lifecycle.LifecycleOwner;
-
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
-import ar.edu.itba.fitness.buddy.App;
-import ar.edu.itba.fitness.buddy.api.model.Cycle;
 import ar.edu.itba.fitness.buddy.api.model.Exercise;
-import ar.edu.itba.fitness.buddy.api.model.PagedList;
-import ar.edu.itba.fitness.buddy.api.repository.Resource;
-import ar.edu.itba.fitness.buddy.api.repository.Status;
+import ar.edu.itba.fitness.buddy.api.model.Media;
 
 public class CycleCard {
     private FullCycle cycle;
     private final ArrayList<ExerciseCard> exerciseCards =new ArrayList<>();
 
-    public CycleCard(FullCycle cycle) {
-
+    public CycleCard(FullCycle cycle, ArrayList<Media> images) {
         this.cycle=cycle;
-        setExerciseCards();
+        setExerciseCards(images);
     }
 
     public ArrayList<Exercise> getExercises() {
         return this.cycle.getExercises();
     }
-    private void setExerciseCards(){
-        for(Exercise exercise: getExercises()){
-            exerciseCards.add(new ExerciseCard(exercise));
+
+    private void setExerciseCards(ArrayList<Media> images) {
+        ArrayList<Exercise> exercises = getExercises();
+        for (int i = 0; i < exercises.size(); i++) {
+            Exercise exercise = exercises.get(i);
+            ExerciseCard card = new ExerciseCard(exercise, images.get(i));
+            exerciseCards.add(card);
         }
     }
 
