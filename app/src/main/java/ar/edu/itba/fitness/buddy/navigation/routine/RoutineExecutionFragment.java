@@ -165,31 +165,6 @@ public class RoutineExecutionFragment extends Fragment {
         timerView.setText(timerStr);
     }
 
-    private class FinishButtonListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            finishDialog.dismiss();
-            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
-            transaction.replace(R.id.frame_container, new CommunityRoutinesFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
-    }
-
-    private class RoutineBarListener implements RatingBar.OnRatingBarChangeListener {
-
-        @Override
-        public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-            Review review = new Review(0, 0, (int)v, "", null);
-            App app = (App)requireActivity().getApplication();
-            app.getReviewRepository().addRoutineReview(routineId, review).observe(getViewLifecycleOwner(), r -> {
-                if(r.getStatus() == Status.ERROR) defaultResourceHandler(r);
-            });
-        }
-    }
-
-
     private void loadExerciseVideo(int id) {
         App app = (App) requireActivity().getApplication();
         app.getExerciseRepository().getExerciseVideos(id, null,0, 1, null, null).observe(getViewLifecycleOwner(), t -> {
@@ -289,7 +264,6 @@ public class RoutineExecutionFragment extends Fragment {
         toggleBtn.setOnClickListener(this::onClickToggle);
 
         listViewBtn.setOnClickListener(v -> {
-            timer.finish();
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
             transaction.replace(R.id.frame_container, new RoutineExecutionListFragment(routineId, routineName, isFavourite, currentCycle, currentExercise,  currentRound));
             transaction.addToBackStack(null);
@@ -313,6 +287,37 @@ public class RoutineExecutionFragment extends Fragment {
         super.onDestroy();
         videoView.release();
         timer.finish();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        timer.finish();
+        videoView.release();
+    }
+
+    private class FinishButtonListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            finishDialog.dismiss();
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
+            transaction.replace(R.id.frame_container, new CommunityRoutinesFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+    private class RoutineBarListener implements RatingBar.OnRatingBarChangeListener {
+
+        @Override
+        public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+            Review review = new Review(0, 0, (int)v, "", null);
+            App app = (App)requireActivity().getApplication();
+            app.getReviewRepository().addRoutineReview(routineId, review).observe(getViewLifecycleOwner(), r -> {
+                if(r.getStatus() == Status.ERROR) defaultResourceHandler(r);
+            });
+        }
     }
 
     private class ShareButtonLister implements View.OnClickListener {
