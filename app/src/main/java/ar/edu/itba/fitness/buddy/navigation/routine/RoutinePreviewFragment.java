@@ -133,6 +133,7 @@ public class RoutinePreviewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         App app = (App)requireActivity().getApplication();
         routine.fillData(app,getViewLifecycleOwner(),this::filterCycles,this::defaultResourceHandler);
         view = inflater.inflate(R.layout.fragment_routine_preview, container, false);
@@ -146,7 +147,6 @@ public class RoutinePreviewFragment extends Fragment {
         });
         return view;
     }
-
 
     private void defaultResourceHandler(Resource<?> resource) {
         switch (resource.getStatus()) {
