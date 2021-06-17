@@ -87,6 +87,7 @@
     <string name="log_out_message">Quieres cerrar sesion?</string>
     <string name="cancel">Cancelar</string>
     <string name="log_out">Cerrar Sesion</string>
+    <string name="order_by">Ordenar Por</string>
 
     <string-array name="order_by_array">
         <item>Titulo</item>

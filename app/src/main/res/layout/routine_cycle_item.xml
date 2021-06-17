@@ -26,7 +26,7 @@
                 android:padding="16dp"
                 android:text="@string/cycle_name"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="@color/purple_web"
+                android:textColor="@color/main_text_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +39,7 @@
                 android:padding="16dp"
                 android:text="@string/cycle_series"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="@color/purple_web"
+                android:textColor="@color/main_text_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,7 +52,7 @@
                 android:fontFamily="@font/muli_black"
                 android:text="@string/series_number"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="@color/purple_web"
+                android:textColor="@color/main_text_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

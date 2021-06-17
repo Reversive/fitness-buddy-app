@@ -7,6 +7,6 @@
     android:fontFamily="@font/muli"
     android:textSize="15sp"
     android:gravity="start"
-    android:textColor="@color/purple_web"
+    android:textColor="@color/routine_finish_color"
     android:padding="5dip"
     />

@@ -84,6 +84,7 @@
     <string name="log_out_message">Want to log out?</string>
     <string name="cancel">Cancel</string>
     <string name="log_out">Log Out</string>
+    <string name="order_by">Order By</string>
 
     <string-array name="order_by_array">
         <item>Title</item>

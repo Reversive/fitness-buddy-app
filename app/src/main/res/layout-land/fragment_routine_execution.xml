@@ -141,7 +141,7 @@
                 android:backgroundTint="@color/white"
                 android:clickable="true"
                 android:contentDescription="@string/default_fab_back_desc"
-                
+
                 app:borderWidth="0dp"
                 app:srcCompat="@drawable/ic_baseline_list_24"
                 app:tint="@color/purple_web" />

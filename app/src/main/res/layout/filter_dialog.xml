@@ -23,8 +23,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muli_black"
-                android:text="Order By"
-                android:textColor="@color/purple_web"
+                android:text="@string/order_by"
+                android:textColor="@color/routine_finish_color"
                 android:textSize="34sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -50,8 +50,9 @@
                 android:id="@+id/order_by_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/routine_finish_color"
                 android:layout_marginTop="16dp"
-                android:text="Done"
+                android:text="@string/done"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/order_by_direction_spinner" />
 
