@@ -34,6 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
+                    android:fontFamily="@font/muli"
                     android:text="@string/routine_execution_exercise_name"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -44,6 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:fontFamily="@font/muli"
                     android:text="@string/routine_execution_exercise_time"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -54,6 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:fontFamily="@font/muli"
                     android:text="@string/routine_execution_exercise_reps"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -97,7 +100,7 @@
                         android:backgroundTint="@color/white"
                         android:clickable="true"
                         android:contentDescription="@string/default_fab_next_desc"
-                        android:tint="@color/purple_web"
+                        app:tint="@color/purple_web"
                         app:borderWidth="0dp"
                         app:srcCompat="@drawable/ic_baseline_open_in_full_24" />
                 </LinearLayout>
@@ -118,7 +121,7 @@
                         android:backgroundTint="@color/white"
                         android:clickable="true"
                         android:contentDescription="@string/default_fab_pause_desc"
-                        android:tint="@color/purple_web"
+                        app:tint="@color/purple_web"
                         app:borderWidth="0dp"
                         app:srcCompat="@drawable/ic_baseline_done_24" />
                 </LinearLayout>
