@@ -1,8 +1,5 @@
 package ar.edu.itba.fitness.buddy.adapter;
 
-
-import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,56 +11,56 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.model.CycleCard;
-import ar.edu.itba.fitness.buddy.model.ExerciseCard;
 
-public class CycleCardAdapter extends RecyclerView.Adapter<CycleCardAdapter.ViewHolder> {
 
-    ArrayList<CycleCard> listCycles;
-    Context context;
+public class CycleCardAdapter extends RecyclerView.Adapter<CycleCardAdapter.ParentViewHolder> {
+    List<CycleCard> cycles;
+    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
-    public CycleCardAdapter(ArrayList<CycleCard> listCycles) {
-        this.listCycles = listCycles;
+    public CycleCardAdapter(List<CycleCard> cycles) {
+        this.cycles = cycles;
     }
 
     @NonNull
     @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_cycle_item,parent,false);
-        return new ViewHolder(view);
+    public ParentViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_cycle_item, parent, false);
+        return new ParentViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        CycleCard cycleCard = listCycles.get(position);
-        //holder.cycle_name.setText(cycleCard.getName());
-       // holder.series_number.setText(String.valueOf( cycleCard.getSeries_number()));
-
-        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
-        holder.nested_rv.setLayoutManager(layoutManager);
-        holder.nested_rv.setHasFixedSize(true);
-        ExerciseCardAdapter exerciseCardAdapter= new ExerciseCardAdapter(cycleCard.getExerciseList());
-        holder.nested_rv.setAdapter(exerciseCardAdapter);
-        exerciseCardAdapter.notifyDataSetChanged();
+    public void onBindViewHolder(@NonNull @NotNull ParentViewHolder holder, int position) {
+        CycleCard parentItem = cycles.get(position);
+        holder.name.setText(parentItem.getCycle().getName());
+        holder.series.setText(String.valueOf(parentItem.getCycle().getRepetitions()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(holder.ChildRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.setInitialPrefetchItemCount(parentItem.getExerciseCards().size());
+        ExerciseCardAdapter exerciseCardAdapter= new ExerciseCardAdapter(parentItem.getExerciseCards());
+        holder.ChildRecyclerView.setLayoutManager(layoutManager);
+        holder.ChildRecyclerView.setAdapter(exerciseCardAdapter);
+        holder.ChildRecyclerView.setRecycledViewPool(viewPool);
     }
 
     @Override
     public int getItemCount() {
-        return listCycles.size();
+        return cycles.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        AppCompatTextView cycle_name,series_number;
-        RecyclerView nested_rv;
-        public ViewHolder(@NonNull @NotNull View itemView) {
+    public class ParentViewHolder extends RecyclerView.ViewHolder {
+        AppCompatTextView name, series;
+        private final RecyclerView ChildRecyclerView;
+        public ParentViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-            cycle_name=itemView.findViewById(R.id.exercise_name);
-            series_number=itemView.findViewById(R.id.series_number);
-            nested_rv=itemView.findViewById(R.id.exercise_recycler);
+            name=itemView.findViewById(R.id.cycle_name);
+            series=itemView.findViewById(R.id.series_number);
+            ChildRecyclerView=itemView.findViewById(R.id.exercise_recycler);
         }
     }
+
+
 }

@@ -12,56 +12,56 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ar.edu.itba.fitness.buddy.R;
 import ar.edu.itba.fitness.buddy.model.ExerciseCard;
 
-public class ExerciseCardAdapter extends RecyclerView.Adapter<ExerciseCardAdapter.ViewHolder>{
-
-    ArrayList<ExerciseCard> exerciseCardArrayList;
-
-    public ExerciseCardAdapter(ArrayList<ExerciseCard> exerciseCardArrayList) {
-        this.exerciseCardArrayList = exerciseCardArrayList;
-    }
-
+public class ExerciseCardAdapter extends RecyclerView.Adapter<ExerciseCardAdapter.ViewHolder> {
+    private final List<ExerciseCard> exerciseCardList;
     @NonNull
-    @NotNull
     @Override
-    public ExerciseCardAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_exercise_item,parent,false);
-        return new ViewHolder(view);
+    public ExerciseCardAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_exercise_item, parent,false);
+        return new ExerciseCardAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ExerciseCardAdapter.ViewHolder holder, int position) {
-        ExerciseCard exerciseCard=exerciseCardArrayList.get(position);
-        holder.exercise_name.setText(exerciseCard.getExercise_name());
-        if(exerciseCard.getRepetitions()==0){
-            holder.repetitions.setText("-");
-            holder.duration.setText(String.valueOf(exerciseCard.getDuration()));
-        }else if(exerciseCard.getDuration()==0){
-            holder.repetitions.setText(String.valueOf(exerciseCard.getRepetitions()));
-            holder.duration.setText("-");
+    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+        ExerciseCard exercise = exerciseCardList.get(position);
+        holder.name.setText(exercise.getName());
+
+        String str = "-";
+        if (exercise.getRepetitions() != 0){
+            str = Integer.toString(exercise.getRepetitions());
         }
-        else
-            holder.repetitions.setText(String.valueOf(exerciseCard.getRepetitions()));
-       // holder.exercise_image.;
+        holder.repetitions.setText(str);
+
+        str = "-";
+        if (exercise.getDuration() != 0){
+            str = Integer.toString(exercise.getDuration());
+        }
+        holder.duration.setText(str);
     }
+
+    public ExerciseCardAdapter(ArrayList<ExerciseCard> exerciseCardList) {
+        this.exerciseCardList = exerciseCardList;
+    }
+
 
     @Override
     public int getItemCount() {
-        return exerciseCardArrayList.size();
+        return exerciseCardList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        AppCompatTextView exercise_name, repetitions,duration;
-        //ImageView exercise_image;
-        public ViewHolder(@NonNull @NotNull View itemView) {
+        AppCompatTextView name, repetitions, duration;
+        ImageView image;
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            exercise_name=itemView.findViewById(R.id.exercise_name);
-            repetitions=itemView.findViewById(R.id.repetitions_number);
-            duration=itemView.findViewById(R.id.duration_number);
-            //exercise_image=itemView.findViewById(R.id.exercise_image);
+            name = itemView.findViewById(R.id.exercise_name);
+            repetitions = itemView.findViewById(R.id.repetitions_number);
+            duration = itemView.findViewById(R.id.duration_number);
         }
     }
 }
