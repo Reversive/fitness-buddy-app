@@ -7,7 +7,7 @@
     android:layout_width="150dp"
     android:layout_height="150dp"
     android:layout_margin="10dp"
-    android:backgroundTint="@color/purple_500"
+    android:backgroundTint="@color/purple_web"
     app:cardCornerRadius="15dp"
     app:cardElevation="8dp"
     >
@@ -22,6 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
             android:fontFamily="@font/muli_black"
             android:padding="5dp"
             android:text="@string/exercise_name"
@@ -41,6 +42,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -48,12 +50,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="5dp"
                 android:fontFamily="@font/muli_black"
                 android:text="@string/exercise_repetitions"
-                android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white"
-                android:textSize="13sp"
+                android:textSize="10sp"
                 tools:ignore="SmallSp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -65,9 +67,8 @@
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/muli_black"
                 android:text="@string/exercise_duration"
-                android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white"
-                android:textSize="13sp"
+                android:textSize="10sp"
                 tools:ignore="SmallSp" />
         </LinearLayout>
 
@@ -82,12 +83,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginStart="25dp"
+                android:layout_marginStart="45dp"
                 android:fontFamily="@font/muli_black"
                 android:text="@string/repetitions_number"
-                android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white"
-                android:textSize="25sp"
+                android:textSize="13sp"
                 tools:ignore="SmallSp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -95,12 +95,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="48dp"
                 android:fontFamily="@font/muli_black"
                 android:text="@string/duration_number"
-                android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white"
-                android:textSize="25sp"
+                android:textSize="13sp"
                 tools:ignore="SmallSp" />
         </LinearLayout>
 

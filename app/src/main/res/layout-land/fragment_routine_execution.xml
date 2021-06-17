@@ -145,10 +145,10 @@
                     android:backgroundTint="@color/white"
                     android:clickable="true"
                     android:contentDescription="@string/default_fab_back_desc"
-                    android:tint="@color/purple_web"
                     android:visibility="invisible"
                     app:borderWidth="0dp"
-                    app:srcCompat="@drawable/ic_skip_previous" />
+                    app:srcCompat="@drawable/ic_skip_previous"
+                    app:tint="@color/purple_web" />
             </LinearLayout>
 
             <LinearLayout
@@ -165,9 +165,9 @@
                     android:backgroundTint="@color/white"
                     android:clickable="true"
                     android:contentDescription="@string/default_fab_pause_desc"
-                    android:tint="@color/purple_web"
                     app:borderWidth="0dp"
-                    app:srcCompat="@drawable/ic_pause" />
+                    app:srcCompat="@drawable/ic_pause"
+                    app:tint="@color/purple_web" />
             </LinearLayout>
 
             <LinearLayout
@@ -184,9 +184,9 @@
                     android:backgroundTint="@color/white"
                     android:clickable="true"
                     android:contentDescription="@string/default_fab_next_desc"
-                    android:tint="@color/purple_web"
                     app:borderWidth="0dp"
-                    app:srcCompat="@drawable/ic_skip_next" />
+                    app:srcCompat="@drawable/ic_skip_next"
+                    app:tint="@color/purple_web" />
             </LinearLayout>
         </LinearLayout>
 

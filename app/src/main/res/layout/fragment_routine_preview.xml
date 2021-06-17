@@ -27,11 +27,19 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/warmup_cycle_recycler"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/warmup_cycle_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/cycle_title2"
@@ -43,15 +51,25 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/exercise_cycle_recycler"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/exercise_cycle_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
 
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -64,11 +82,20 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/light_white" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cooldown_cycle_recycler"
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cooldown_cycle_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
         </LinearLayout>
     </ScrollView>
 
@@ -76,7 +103,7 @@
         android:id="@+id/routine_executor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:tint="@color/purple_web"
+        app:tint="@color/purple_web"
         app:borderWidth="0dp"
         android:layout_gravity="bottom|center"
         android:backgroundTint="@color/white"
