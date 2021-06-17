@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muli_black"
                 android:text="@string/congratulations"
-                android:textColor="@color/purple_web"
+                android:textColor="@color/routine_finish_color"
                 android:textSize="34sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/light_white"
                 android:numStars="5"
-                android:progressTint="@color/purple_web"
+                android:progressTint="@color/routine_finish_color"
                 android:secondaryProgressTint="@color/light_white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/muli_black"
                 android:text="@string/please_rate_this_routine"
-                android:textColor="@color/purple_web"
+                android:textColor="@color/routine_finish_color"
                 android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
                 android:src="@drawable/ic_favorite_border"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView"
-                app:tint="#673AB7"
+                app:tint="@color/routine_finish_color"
                 />
 
             <androidx.appcompat.widget.AppCompatImageButton
@@ -80,10 +80,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/dialog_add_to_fav"
                 app:layout_constraintTop_toBottomOf="@+id/textView"
-                app:tint="#673AB7" />
+                app:tint="@color/routine_finish_color" />
 
             <Button
                 android:id="@+id/finishRoutineButton"
+                android:backgroundTint="@color/routine_finish_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -98,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muli"
                 android:text="@string/add_to_favorites"
-                android:textColor="#673AB7"
+                android:textColor="@color/routine_finish_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_add_to_fav" />
 
@@ -109,7 +110,7 @@
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/muli"
                 android:text="@string/share"
-                android:textColor="#673AB7"
+                android:textColor="@color/routine_finish_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_share" />
 

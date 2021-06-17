@@ -52,7 +52,7 @@
                 android:fontFamily="@font/muli_black"
                 android:text="@string/series_number"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="@color/purple_500"
+                android:textColor="@color/purple_web"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
