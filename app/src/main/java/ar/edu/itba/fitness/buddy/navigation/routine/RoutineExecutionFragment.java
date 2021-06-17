@@ -4,9 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Rating;
 import android.os.Bundle;
-import android.service.autofill.RegexValidator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,31 +24,20 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.DigestException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import ar.edu.itba.fitness.buddy.App;
 import ar.edu.itba.fitness.buddy.R;
-import ar.edu.itba.fitness.buddy.adapter.RoutineCardAdapter;
-import ar.edu.itba.fitness.buddy.api.model.Cycle;
 import ar.edu.itba.fitness.buddy.api.model.Error;
 import ar.edu.itba.fitness.buddy.api.model.Exercise;
 import ar.edu.itba.fitness.buddy.api.model.Media;
 import ar.edu.itba.fitness.buddy.api.model.PagedList;
 import ar.edu.itba.fitness.buddy.api.model.Review;
-import ar.edu.itba.fitness.buddy.api.model.Routine;
-import ar.edu.itba.fitness.buddy.api.repository.ExerciseRepository;
 import ar.edu.itba.fitness.buddy.api.repository.Resource;
 import ar.edu.itba.fitness.buddy.api.repository.Status;
-import ar.edu.itba.fitness.buddy.api.service.ApiExerciseService;
 import ar.edu.itba.fitness.buddy.listener.YouTubeListener;
 import ar.edu.itba.fitness.buddy.model.FullRoutine;
 import ar.edu.itba.fitness.buddy.model.PausableTimer;
-import ar.edu.itba.fitness.buddy.model.RoutineCard;
-import ar.edu.itba.fitness.buddy.navigation.MainNavigationActivity;
 import ar.edu.itba.fitness.buddy.navigation.community.CommunityRoutinesFragment;
 
 public class RoutineExecutionFragment extends Fragment {
@@ -73,25 +60,26 @@ public class RoutineExecutionFragment extends Fragment {
 
     private final int routineId;
     private final String routineName;
+    private boolean isFavourite;
     private int currentCycle;
     private int currentRound;
     private int currentExercise;
 
     private boolean noTimer;
-    private boolean isFavorite = false;
 
     Dialog finishDialog;
 
-    public RoutineExecutionFragment(int routineId, String routineName) {
-        this(routineId, routineName, 0, 0, 0);
+    public RoutineExecutionFragment(int routineId, String routineName, boolean isFavourite) {
+        this(routineId, routineName, isFavourite, 0, 0, 0);
     }
 
-    public RoutineExecutionFragment(int routineId, String routineName, int currentCycle, int currentExercise, int currentRound) {
+    public RoutineExecutionFragment(int routineId, String routineName, boolean isFavourite, int currentCycle, int currentExercise, int currentRound) {
         this.routineId = routineId;
         this.routineName = routineName;
         this.currentCycle = currentCycle;
         this.currentExercise = currentExercise;
         this.currentRound = currentRound;
+        this.isFavourite = isFavourite;
     }
 
     public void timerCallback() {
@@ -133,6 +121,11 @@ public class RoutineExecutionFragment extends Fragment {
                     AppCompatImageButton favoriteButton = finishDialog.findViewById(R.id.dialog_add_to_fav);
                     shareButton.setOnClickListener(new ShareButtonLister());
                     favoriteButton.setOnClickListener(new FavoriteButtonListener());
+                    if (isFavourite)
+                        favoriteButton.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite));
+                    else
+                        favoriteButton.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_border));
+
                     finishButton.setOnClickListener(new FinishButtonListener());
                     ratingBar.setOnRatingBarChangeListener(new RoutineBarListener());
                     return;
@@ -292,7 +285,7 @@ public class RoutineExecutionFragment extends Fragment {
         listViewBtn.setOnClickListener(v -> {
             timer.finish();
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
-            transaction.replace(R.id.frame_container, new RoutineExecutionListFragment(routineId, routineName, currentCycle, currentExercise,  currentRound));
+            transaction.replace(R.id.frame_container, new RoutineExecutionListFragment(routineId, routineName, isFavourite, currentCycle, currentExercise,  currentRound));
             transaction.addToBackStack(null);
             transaction.commit();
         });
@@ -301,8 +294,6 @@ public class RoutineExecutionFragment extends Fragment {
         videoView.initialize(videoPlayer);
 
         getLifecycle().addObserver(videoView);
-
-        //getCycles();
 
         fullRoutine = new FullRoutine(routineId);
         App app = (App) requireActivity().getApplication();
@@ -335,11 +326,28 @@ public class RoutineExecutionFragment extends Fragment {
         @Override
         public void onClick(View view) {
             AppCompatImageButton favButton = (AppCompatImageButton)view;
-            favButton.setBackgroundResource(R.drawable.ic_favorite);
             App app = (App)requireActivity().getApplication();
-            app.getFavoriteRepository().setFavorite(routineId).observe(getViewLifecycleOwner(), f -> {
-                Toast.makeText(app, "Added to favorites", Toast.LENGTH_SHORT).show();
-            });
+            if (!isFavourite) {
+                app.getFavoriteRepository().setFavorite(routineId).observe(getViewLifecycleOwner(), f -> {
+                    if (f.getStatus() == Status.SUCCESS) {
+                        isFavourite = !isFavourite;
+                        favButton.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite));
+                        Toast.makeText(app, "Added to favorites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        defaultResourceHandler(f);
+                    }
+                });
+            } else {
+                app.getFavoriteRepository().unsetFavorite(routineId).observe(getViewLifecycleOwner(), f -> {
+                    if (f.getStatus() == Status.SUCCESS) {
+                        isFavourite = !isFavourite;
+                        favButton.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_border));
+                        Toast.makeText(app, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        defaultResourceHandler(f);
+                    }
+                });
+            }
         }
     }
 }
